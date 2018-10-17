@@ -7,7 +7,9 @@ package Gui;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -23,7 +25,9 @@ import java.awt.Color;
 @SuppressWarnings("serial")
 public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
 
-	public int count = 0;
+	private int count = 0;
+	
+	public String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 	
     /**
      * Creates new form workOrderMutliPartSelect
@@ -50,6 +54,25 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuAdd = new javax.swing.JMenu();
         MenuRemove = new javax.swing.JMenu();
+        MenuRemove.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		String[] tempAlphabet = new String[26];
+        		for(int i = 0; i< count; i++) {
+        			tempAlphabet[i] = alphabet[i];
+        		}
+                Object selectedObject = JOptionPane.showInputDialog(getParent(), "Select Part To Remove", "Part Remover", JOptionPane.PLAIN_MESSAGE, null, tempAlphabet, tempAlphabet[0]);
+                
+                //checks if cancle was selected
+                if(selectedObject != null) {
+                	for(int i = 0; i< tempAlphabet.length; i++) {
+            			if(selectedObject.toString().equals(alphabet[i])) {
+            				removePart(i);
+            			}
+            		}
+                }
+             }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 400));
@@ -64,6 +87,7 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         jScrollPane2.setPreferredSize(new java.awt.Dimension(800, 300));
 
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel6.setName("Main Part Holder");
 
         
 
@@ -101,26 +125,21 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         MenuAdd.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		jPanel6.add(createPanel(count));
+        		if(count < 26) {
+        			jPanel6.add(createPanel(count));
+        			jScrollPane2.validate();
+        			JScrollBar vertical = jScrollPane2.getVerticalScrollBar();
+        			vertical.setValue( vertical.getMaximum() );
+        		}if(count >= 26) {
+        			JOptionPane.showMessageDialog(getParent(),"Maximum Parts Reached");  
+        		}
         	}
         });
         
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public javax.swing.JPanel createPanel(int count){
-//        javax.swing.JPanel jPanel3 = new JPanel();
-//        jPanel3.setName(String.valueOf(count));
-//        java.awt.Color color = new java.awt.Color(((int)(Math.random() * ((225 - 0) + 1)) + 0),((int)(Math.random() * ((225 - 0) + 1)) + 0),((int)(Math.random() * ((225 - 0) + 1)) + 0));
-//        jPanel3.setBackground(color);
-//        jPanel3.setMinimumSize(new java.awt.Dimension(800, 100));
-//        jPanel3.setPreferredSize(new java.awt.Dimension(800, 100));
-//        
-//        
-//        JLabel lblNewLabel;     
-//        lblNewLabel = new JLabel(String.valueOf(count));
-//        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//        jPanel3.add(lblNewLabel);
+    public javax.swing.JPanel createPanel(int letterCorrelation){
     	
     	javax.swing.JPanel PanelDefault = new JPanel();
         javax.swing.JPanel PanelDescription = new JPanel();
@@ -129,7 +148,7 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         javax.swing.JTextArea TextAreaDescription = new JTextArea();
         javax.swing.JTextField TextFieldPart = new JTextField();
         
-        PanelDefault.setName(String.valueOf(count));
+        PanelDefault.setName(String.valueOf(letterCorrelation));
 
         java.awt.Color color = new java.awt.Color(((int)(Math.random() * ((225 - 0) + 1)) + 0),((int)(Math.random() * ((225 - 0) + 1)) + 0),((int)(Math.random() * ((225 - 0) + 1)) + 0));
         PanelDefault.setMinimumSize(new java.awt.Dimension(800, 100));
@@ -141,7 +160,8 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
 
         TextFieldPart.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         TextFieldPart.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        TextFieldPart.setText("A");
+        TextFieldPart.setText(alphabet[count]);
+        TextFieldPart.setEditable(false);
         TextFieldPart.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         TextFieldPart.setPreferredSize(new java.awt.Dimension(240, 30));
         PanelPart.add(TextFieldPart, new java.awt.GridBagConstraints());
@@ -155,17 +175,36 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         TextAreaDescription.setColumns(20);
         TextAreaDescription.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
         TextAreaDescription.setRows(5);
+        TextAreaDescription.setToolTipText("Description");
         ScrollPaneDescription.setViewportView(TextAreaDescription);
         PanelDescription.add(ScrollPaneDescription);
         PanelDefault.add(PanelDescription);
         
+        
+        jScrollPane2.revalidate();
         jPanel6.revalidate();
         
+                        
         count++;
         
         return PanelDefault;
+        
     }
 
+    public void removePart(int letterCorrelation) {
+    		//finds the correct selected part
+    		for (int j = 0; j<jPanel6.getComponentCount(); j++) {
+    			if (jPanel6.getComponent(j).getName().equals(String.valueOf(letterCorrelation))) {
+    				jPanel6.remove(jPanel6.getComponent(j));
+    				System.out.println(jPanel6.getComponent(j).getName());
+    			}
+    		}
+    	//reloads the panel after deletion
+    	jScrollPane2.revalidate();
+        jPanel6.revalidate();
+        jPanel6.repaint();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button ButtonSubmit;
     private javax.swing.JMenu MenuAdd;
