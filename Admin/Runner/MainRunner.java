@@ -14,7 +14,7 @@ import Gui.newWorkOrder;
 public class MainRunner {
 
 	public static void main(String[] args) {
-		runWorkOrderMultiParSelect();
+		runAdminMainGui();
 	}
 	
 	public static void runAdminMainGui() {

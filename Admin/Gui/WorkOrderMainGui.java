@@ -5,6 +5,7 @@
  */
 package Gui;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Runner.MainRunner;
 
@@ -64,13 +65,28 @@ public class WorkOrderMainGui extends javax.swing.JFrame {
         PanelWorkOrderCreate.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		MainRunner.runWorkOrderNew();
-        		//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("WorkOrder")) {
-        				Frame.getFrames()[i].dispose();
-        			}
-        		}
+        	    int response = JOptionPane.showConfirmDialog(null, "Is this a multi Part Job?", "Parts",
+        	            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        	        if (response == JOptionPane.NO_OPTION) {
+        	        	MainRunner.runWorkOrderNew();
+                		//finds current frame out of listed frames and disposes of it
+                		for(int i = 0; i < Frame.getFrames().length; i++) {
+                			if(Frame.getFrames()[i].getTitle().equals("WorkOrder")) {
+                				Frame.getFrames()[i].dispose();
+                			}
+                		}
+        	        } else if (response == JOptionPane.YES_OPTION) {
+        	        	MainRunner.runWorkOrderMultiParSelect();
+                		//finds current frame out of listed frames and disposes of it
+                		for(int i = 0; i < Frame.getFrames().length; i++) {
+                			if(Frame.getFrames()[i].getTitle().equals("WorkOrder")) {
+                				Frame.getFrames()[i].dispose();
+                			}
+                		}
+        	        } else if (response == JOptionPane.CLOSED_OPTION) {
+        	        	
+        	        }
+        	        
         	}
         });
         jLabel2 = new javax.swing.JLabel();

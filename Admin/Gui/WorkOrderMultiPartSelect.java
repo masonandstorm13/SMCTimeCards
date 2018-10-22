@@ -14,9 +14,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import Runner.MainRunner;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Frame;
+
+import javax.swing.JMenu;
 
 /**
  *
@@ -58,12 +66,12 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		String[] tempAlphabet = new String[26];
-        		for(int i = 0; i< count; i++) {
+        		for(int i = 0; i< jPanel6.getComponentCount(); i++) {
         			tempAlphabet[i] = alphabet[i];
         		}
                 Object selectedObject = JOptionPane.showInputDialog(getParent(), "Select Part To Remove", "Part Remover", JOptionPane.PLAIN_MESSAGE, null, tempAlphabet, tempAlphabet[0]);
                 
-                //checks if cancle was selected
+                //checks if cancel was selected
                 if(selectedObject != null) {
                 	for(int i = 0; i< tempAlphabet.length; i++) {
             			if(selectedObject.toString().equals(alphabet[i])) {
@@ -81,7 +89,6 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         jPanel1.setMinimumSize(new java.awt.Dimension(800, 300));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 300));
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
-
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setMinimumSize(new java.awt.Dimension(800, 300));
         jScrollPane2.setPreferredSize(new java.awt.Dimension(800, 300));
@@ -113,6 +120,21 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
 
         jMenuBar1.setMinimumSize(new java.awt.Dimension(800, 20));
         jMenuBar1.setPreferredSize(new java.awt.Dimension(800, 20));
+        
+        MenuBack = new JMenu("Back");
+        MenuBack.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		MainRunner.runWorkOrderMain();
+        		//finds current frame out of listed frames and disposes of it
+        		for(int i = 0; i < Frame.getFrames().length; i++) {
+        			if(Frame.getFrames()[i].getTitle().equals("MultiPartSelect")) {
+        				Frame.getFrames()[i].dispose();
+        			}
+        		}
+        	}
+        });
+        jMenuBar1.add(MenuBack);
 
         MenuAdd.setText("Add");
         jMenuBar1.add(MenuAdd);
@@ -130,7 +152,7 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         			jScrollPane2.validate();
         			JScrollBar vertical = jScrollPane2.getVerticalScrollBar();
         			vertical.setValue( vertical.getMaximum() );
-        		}if(count >= 26) {
+        		}else if(count >= 26) {
         			JOptionPane.showMessageDialog(getParent(),"Maximum Parts Reached");  
         		}
         	}
@@ -163,6 +185,7 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         TextFieldPart.setText(alphabet[count]);
         TextFieldPart.setEditable(false);
         TextFieldPart.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        TextFieldPart.setName("Letter Holder");
         TextFieldPart.setPreferredSize(new java.awt.Dimension(240, 30));
         PanelPart.add(TextFieldPart, new java.awt.GridBagConstraints());
 
@@ -192,17 +215,42 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
     }
 
     public void removePart(int letterCorrelation) {
+    	System.out.println("First Total Count: " + jPanel6.getComponentCount());
     		//finds the correct selected part
     		for (int j = 0; j<jPanel6.getComponentCount(); j++) {
+        		System.out.println(jPanel6.getComponent(j).getName());
     			if (jPanel6.getComponent(j).getName().equals(String.valueOf(letterCorrelation))) {
     				jPanel6.remove(jPanel6.getComponent(j));
-    				System.out.println(jPanel6.getComponent(j).getName());
     			}
-    		}
+    		}   		
     	//reloads the panel after deletion
     	jScrollPane2.revalidate();
         jPanel6.revalidate();
         jPanel6.repaint();
+        correctPartPossition(letterCorrelation);
+    }
+    
+    //corrects the text in the edit text as well as corrected the names of all jFrames
+    public void correctPartPossition(int letterCorrelation) {
+    	String [] alph = alphabet;
+    	System.out.println("Second Total Count: " + jPanel6.getComponentCount());
+    	for(int j = letterCorrelation; j<jPanel6.getComponentCount(); j++) {
+    		//rest all the names so they equal there position in the current array 
+    		jPanel6.getComponent(j).setName(String.valueOf(j));
+    		
+    		//iterates through panels to edit text to set the letter value for each affected area 
+    		Component mainPanel = jPanel6.getComponent(j);
+    		if(mainPanel instanceof Container){
+    			Component panelDescription = ((Container) mainPanel).getComponent(0);
+    			if(panelDescription instanceof Container) {
+    				Component editTextLetter = ((Container) panelDescription).getComponent(0);
+    				if(editTextLetter instanceof javax.swing.JTextField) {
+        				((javax.swing.JTextField) editTextLetter).setText(alph[j]);
+        			}
+    			}
+    		}
+    	}    	  
+    	count--;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -214,5 +262,6 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
+    private JMenu MenuBack;
     // End of variables declaration//GEN-END:variables
 }
