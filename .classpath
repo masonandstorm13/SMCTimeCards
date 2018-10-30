@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<accessrules>
+			<accessrule kind="accessible" pattern="javax/smartcardio/*"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="Admin"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-annotations-2.9.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-annotations-2.9.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-core-2.9.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-core-2.9.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-databind-2.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/jackson-databind-2.9.5-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/javax.mail-1.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/logback-classic-1.3.0-alpha4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/logback-core-1.3.0-alpha4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-api-1.0.M8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-core-1.0.M8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-ndef-1.0.M8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/slf4j-api-1.8.0-beta1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

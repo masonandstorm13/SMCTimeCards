@@ -6,6 +6,7 @@
 package Gui;
 import javax.swing.ImageIcon;
 
+import Custom.FileHandler;
 import Runner.MainRunner;
 
 import java.awt.Dimension;
@@ -61,9 +62,31 @@ public class EmployeeMain extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel1.setIcon(new ImageIcon(EmployeeMain.class.getResource("/Resources/back-button-icon.png")));
         PanelEmployeeCreate = new javax.swing.JPanel();
+        PanelEmployeeCreate.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		MainRunner.runNewEmployee();;
+        		//finds current frame out of listed frames and disposes of it
+        		for(int i = 0; i < Frame.getFrames().length; i++) {
+        			if(Frame.getFrames()[i].getTitle().equals("Employee")) {
+        				Frame.getFrames()[i].dispose();
+        			}
+        		}
+        	}
+        });
         jLabel2 = new javax.swing.JLabel();
         jLabel2.setIcon(new ImageIcon(EmployeeMain.class.getResource("/Resources/add-employee-icon.png")));
         PanelEmployeeEdit = new javax.swing.JPanel();
+        PanelEmployeeEdit.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		MainRunner.runEmployeeFind();
+        		//finds current frame out of listed frames and disposes of it
+        		for(int i = 0; i < Frame.getFrames().length; i++) {
+        			EmployeeMain.this.dispose();
+        		}
+        	}
+        });
         jLabel3 = new javax.swing.JLabel();
         jLabel3.setIcon(new ImageIcon(EmployeeMain.class.getResource("/Resources/edit-employee-icon.png")));
         PanelEmployeeView = new javax.swing.JPanel();
