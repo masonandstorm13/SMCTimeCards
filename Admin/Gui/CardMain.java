@@ -62,6 +62,18 @@ public class CardMain extends javax.swing.JFrame {
         jLabel1.setIcon(new ImageIcon(CardMain.class.getResource("/Resources/back-button-icon.png")));
         PanelCardCreate = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel2.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		MainRunner.runNewCardSelectEmployee();
+        		//finds current frame out of listed frames and disposes of it
+        		for(int i = 0; i < Frame.getFrames().length; i++) {
+        			if(Frame.getFrames()[i].getTitle().equals("Card")) {
+        				Frame.getFrames()[i].dispose();
+        			}
+        		}
+        	}
+        });
         jLabel2.setIcon(new ImageIcon(CardMain.class.getResource("/Resources/add-idcard-icon.png")));
         PanelCardEdit = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();

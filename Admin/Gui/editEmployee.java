@@ -7,7 +7,9 @@ package Gui;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,6 +24,7 @@ import Runner.MainRunner;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +41,8 @@ public class editEmployee extends javax.swing.JFrame {
 	public File profilePicture = new File("");
 	public File employeeDirectory = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Employees\\");
 	public Employee selectedEmployee;
+	public BufferedImage resizedImage = null;
+
 	
     /**
      * Creates new form newEmployee
@@ -71,8 +76,18 @@ public class editEmployee extends javax.swing.JFrame {
                 chooser.setFileFilter(filter);
                 int returnVal = chooser.showOpenDialog(null);
                 if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    profilePicture = chooser.getSelectedFile();
-                    Label_ProfilePicture.setIcon(new ImageIcon(profilePicture.getAbsolutePath())); // NOI18N
+
+					try {
+						//gets selected image and resizes it to 150,150
+                		FileHandler fileHandler = new FileHandler();
+                		profilePicture = chooser.getSelectedFile();
+						Image image = ImageIO.read(chooser.getSelectedFile());
+						resizedImage = fileHandler.resizeImage(image, 150, 150);
+						Label_ProfilePicture.setIcon(new ImageIcon(resizedImage)); // NOI18N	
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     
                 }
         	}

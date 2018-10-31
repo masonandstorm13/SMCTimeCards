@@ -81,12 +81,14 @@ public class findEmployee extends javax.swing.JFrame {
     			//checks if there is a picture then sets it in the preview
     			if(employee.pictureLocaitonPath != null) {
     				Label_ProfilePicture.setIcon(new ImageIcon(employee.getPictureLocaitonPath()));
+    			}else {
+    				Label_ProfilePicture.setIcon(new ImageIcon(findEmployee.class.getResource("/Resources/user-picture.png"))); // NOI18N
     			}
         	}
         });
         jPanel2 = new javax.swing.JPanel();
-        Button_Submit = new javax.swing.JButton();
-        Button_Submit.addMouseListener(new MouseAdapter() {
+        btnEdit = new javax.swing.JButton();
+        btnEdit.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		if(employee == null) {
@@ -167,12 +169,12 @@ public class findEmployee extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(640, 135));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        Button_Submit.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 24)); // NOI18N
-        Button_Submit.setText("Submit");
-        Button_Submit.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        Button_Submit.setMinimumSize(new java.awt.Dimension(240, 50));
-        Button_Submit.setPreferredSize(new java.awt.Dimension(240, 50));
-        jPanel2.add(Button_Submit, new java.awt.GridBagConstraints());
+        btnEdit.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 24)); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        btnEdit.setMinimumSize(new java.awt.Dimension(240, 50));
+        btnEdit.setPreferredSize(new java.awt.Dimension(240, 50));
+        jPanel2.add(btnEdit, new java.awt.GridBagConstraints());
 
         PanelSelect.add(jPanel2);
 
@@ -191,7 +193,7 @@ public class findEmployee extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Button_Submit;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JLabel Label_Name;
     private javax.swing.JLabel Label_ProfilePicture;
     private javax.swing.JList<String> List_Employees;
