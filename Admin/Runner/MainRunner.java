@@ -1,6 +1,19 @@
 package Runner;
 
 import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import Gui.AdminMainGui;
 import Gui.CardMain;
@@ -15,6 +28,7 @@ import Gui.newCardSelectEmployee;
 import Gui.newEmployee;
 import Gui.newWorkOrder;
 import Gui.writeCard;
+import NFC.Acr122Manager;
 import Objects.Employee;
 
 public class MainRunner {
@@ -517,6 +531,9 @@ public class MainRunner {
 	}
 	
 	public static void runWriteCard(String cardValue) {
+		
+		
+    	
 		// TODO Auto-generated method stub
 		/* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -545,7 +562,9 @@ public class MainRunner {
             @Override
 			public void run() {
             		//runs the find employee method
-                    new writeCard(cardValue).setVisible(true);
+            		JFrame test = new writeCard(cardValue);
+                    test.setVisible(true);                                          
+                   
             }
         });
 	}

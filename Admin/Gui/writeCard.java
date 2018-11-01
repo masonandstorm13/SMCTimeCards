@@ -5,13 +5,19 @@
  */
 package Gui;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Runner.MainRunner;
+import NFC.Acr122Manager;
 
+import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -19,13 +25,42 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("serial")
 public class writeCard extends javax.swing.JFrame {
-
+	
+	public String dataCardValue;
+	public TimerTask timerTask;
     /**
      * Creates new form writeCard
      */
     public writeCard(String cardValue) {
+    	//sets up values for nfc card defaults
+		final String sector = "01" ;
+    	final String block = "00";   	
+    	String keyTmp = "FFFFFFFFFFFF" ;
+    	String dataTmp = cardValue;
+    	
+    	dataCardValue = cardValue;
     	setTitle("writeCard");
     	initComponents();
+    	//sets up timer
+    	Timer timer = new Timer();
+    	//starts timer task for checking if frame is active then runs the write card method
+    	timerTask = new TimerTask() {
+    		public void run() {
+    			if(writeCard.this.isActive() == true) {
+    				try {    					
+            			Acr122Manager.writeToCards(sector,block,keyTmp,dataTmp);
+            		} catch (IOException exeption) {
+            			// TODO Auto-generated catch block
+            			exeption.printStackTrace();
+            		}
+    			}else {
+    				
+    			}
+    		}
+    	};
+    	
+    	timer.schedule(timerTask, 500);
+    	
     }
 
     /**
@@ -46,8 +81,16 @@ public class writeCard extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuBack = new javax.swing.JMenu();
         MenuBack.addMouseListener(new MouseAdapter() {
-        	@Override
+        	@SuppressWarnings("deprecation")
+			@Override
         	public void mouseClicked(MouseEvent arg0) {
+        		timerTask.cancel();
+        		try {
+					Acr122Manager.getDevice().close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		MainRunner.runNewCardSelectEmployee();
         		writeCard.this.dispose();
         	}
@@ -76,6 +119,7 @@ public class writeCard extends javax.swing.JFrame {
         setJMenuBar(jMenuBar1);
 
         pack();
+
     }// </editor-fold>//GEN-END:initComponents
 
 

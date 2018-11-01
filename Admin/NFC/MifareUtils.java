@@ -25,10 +25,13 @@ package NFC;
 
 import static NFC.HexUtils.*;
 
+import java.awt.Frame;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import javax.smartcardio.CardException;
+import javax.swing.JOptionPane;
+
 import org.nfctools.mf.MfAccess;
 import org.nfctools.mf.MfException;
 import org.nfctools.mf.MfReaderWriter;
@@ -37,6 +40,8 @@ import org.nfctools.mf.block.MfBlock;
 import org.nfctools.mf.card.MfCard;
 import org.nfctools.mf.classic.Key;
 import org.nfctools.mf.classic.MemoryLayout;
+
+import Runner.MainRunner;
 
 /**
  * Mifare utility class.
@@ -124,7 +129,8 @@ public final class MifareUtils {
      * @param key the key to be used for writing
      * @param dataString the data hex string to be written
      */
-    public static void writeToMifareClassic1KCard(MfReaderWriter reader, MfCard card, int sectorId, int blockId, String key, String dataString)
+    @SuppressWarnings("deprecation")
+	public static void writeToMifareClassic1KCard(MfReaderWriter reader, MfCard card, int sectorId, int blockId, String key, String dataString)
             throws CardException {
         if (!isValidMifareClassic1KKey(key)) {
             System.out.println("The key " + key + "is not valid.");
@@ -170,13 +176,31 @@ public final class MifareUtils {
                 } else {
                     // Block read
                     System.out.println(blockData + " (Key " + access.getKey() + ": " + key + ")");
+                    String[] options = {"Done", "Keep Scanning"};
+                    int x = JOptionPane.showOptionDialog(null, "Card Created",
+                            "Card Created",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    if(x == 0)
+                    {
+                    	MainRunner.runCardMain();
+                		//finds current frame out of listed frames and disposes of it
+                		for(int i = 0; i < Frame.getFrames().length; i++) {
+                			if(Frame.getFrames()[i].getTitle().equals("writeCard")) {
+                				Frame.getFrames()[i].dispose();
+                			}
+                		}
+                       Thread.currentThread().stop();
+                    }else {
+                    	
+                    }
+                    
                 }
             }
         }
     }
     
     /**
-     * Reads a Mifare Classic 1K block.
+     * Reads a Mfire Classic 1K block.
      * @param reader the reader
      * @param access the access
      * @return a string representation of the block data, null if the block can't be read

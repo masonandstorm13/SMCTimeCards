@@ -39,6 +39,8 @@ import org.nfctools.mf.card.MfCard;
  */
 public class Acr122Manager {
 	
+	public static  Acr122Device acr122;
+	
 	  public enum Commands {
 
 		    DUMP("-d"),
@@ -77,7 +79,7 @@ public class Acr122Manager {
      * @param listener a listener
      */
     public static void listen(MfCardListener listener) throws IOException {
-        Acr122Device acr122;
+    	
         try {
             acr122 = new Acr122Device();
         } catch (RuntimeException re) {
@@ -87,10 +89,14 @@ public class Acr122Manager {
         acr122.open();
         
         acr122.listen(listener);
-        System.out.println("Press ENTER to exit");
-        System.in.read();
-        
+        System.out.println("Press ENTER to exit");       
+        System.in.read();        
+              
         acr122.close();
+    }
+    
+    public static Acr122Device getDevice() {
+    	return  acr122;
     }
     
     /**
@@ -160,7 +166,8 @@ public class Acr122Manager {
                 }
             }
         };
-
+        
+        
         // Start listening
         listen(listener);
     }
