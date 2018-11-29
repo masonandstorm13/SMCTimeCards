@@ -41,6 +41,7 @@ import org.nfctools.mf.card.MfCard;
 import org.nfctools.mf.classic.Key;
 import org.nfctools.mf.classic.MemoryLayout;
 
+import Gui.CardGui.getEmployeeFromCard;
 import Runner.MainRunner;
 
 /**
@@ -118,6 +119,19 @@ public final class MifareUtils {
                 dumpMifareClassic1KBlock(reader, card, sectorIndex, blockIndex, keys);
             }
         }
+    }
+    
+    
+    /**
+     * Dumps a Mifare Classic 1K card.
+     * @param reader the reader
+     * @param card the card
+     * @param keys the keys to be tested for reading
+     * @throws IOException 
+     */
+    public static void singleValueDumpMifareClassic1KCard(MfReaderWriter reader, MfCard card, List<String> keys, String test)
+            throws CardException, IOException {
+    	singleReadMifareClassic1KBlock(reader, card, 1, 0, keys, test);
     }
     
     /**
@@ -270,5 +284,27 @@ public final class MifareUtils {
         }
         // All keys tested, failed to read block
         System.out.println("<Failed to read block>");
+    }
+    
+    private static void singleReadMifareClassic1KBlock(MfReaderWriter reader, MfCard card, int sectorId, int blockId, List<String> keys, String test) throws CardException, IOException {
+        for (String key : keys) {
+            // For each provided key...
+            if (isValidMifareClassic1KKey(key)) {
+                byte[] keyBytes = hexStringToBytes(key);
+                // Reading with key A
+                MfAccess access = new MfAccess(card, sectorId, blockId, Key.A, keyBytes);
+                String blockData = readMifareClassic1KBlock(reader, access);
+                if (blockData == null) {
+                    // Reading with key B
+                    access = new MfAccess(card, sectorId, blockId, Key.B, keyBytes);
+                    blockData = readMifareClassic1KBlock(reader, access);
+                }
+                if (blockData != null) {
+                	getEmployeeFromCard.cardValue = blockData;
+                	Acr122Manager.getDevice().close();
+                	getEmployeeFromCard.startChecker();
+                }
+            }          
+        }
     }
 }

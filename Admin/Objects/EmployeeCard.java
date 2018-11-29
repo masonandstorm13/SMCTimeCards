@@ -1,7 +1,5 @@
 package Objects;
 
-import java.util.List;
-
 public class EmployeeCard {
 
 	public String cardValue;

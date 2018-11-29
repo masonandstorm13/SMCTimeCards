@@ -7,6 +7,7 @@ import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -15,26 +16,47 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import Gui.AdminMainGui;
-import Gui.CardMain;
-import Gui.EmployeeMain;
-import Gui.ExtraMain;
-import Gui.WorkInProgressMain;
-import Gui.WorkOrderMainGui;
-import Gui.WorkOrderMultiPartSelect;
-import Gui.editEmployee;
-import Gui.findEmployee;
-import Gui.newCardSelectEmployee;
-import Gui.newEmployee;
-import Gui.newWorkOrder;
-import Gui.writeCard;
+import Custom.FileHandler;
+import Gui.CardGui.getEmployeeFromCard;
+import Gui.CardGui.newCardSelectEmployee;
+import Gui.CardGui.writeCard;
+import Gui.EmployeeGui.editEmployee;
+import Gui.EmployeeGui.findEmployee;
+import Gui.EmployeeGui.newEmployee;
+import Gui.ExtraGui.findMachine;
+import Gui.ExtraGui.newMachine;
+import Gui.MainGui.AdminMainGui;
+import Gui.MainGui.CardMain;
+import Gui.MainGui.EmployeeMain;
+import Gui.MainGui.ExtraMain;
+import Gui.MainGui.WorkInProgressMain;
+import Gui.MainGui.WorkOrderMainGui;
+import Gui.WorkOrderGui.MultiPartWorkOrder.WorkOrderMultiPartSelect;
+import Gui.WorkOrderGui.SinglePartWorkOrder.newWorkOrderOnePart;
 import NFC.Acr122Manager;
 import Objects.Employee;
+import Objects.FirstRun;
 
 public class MainRunner {
 
+	public static FirstRun hinttext;
+	
 	public static void main(String[] args) {
 		runAdminMainGui();
+		
+		FileHandler filehandler = new FileHandler();
+		File firstRunTest = new File("C:/Users/" + System.getProperty("user.name") + "/SmcTimeCardSystem");
+		
+		if(firstRunTest.exists() == false) {
+			firstRunTest.mkdir();		
+			FirstRun firstrun = new FirstRun();
+			firstrun.setHintText(true);
+			filehandler.writeFile(new File("C:/Users/" + System.getProperty("user.name") + "/SmcTimeCardSystem/firstRun.JSON"), firstrun);
+		}else {
+			MainRunner.hinttext = filehandler.getFirstRun(new File("C:/Users/" + System.getProperty("user.name") + "/SmcTimeCardSystem/firstRun.JSON"));
+		}
+		
+		System.out.println(MainRunner.hinttext);
 	}
 	
 	public static void runAdminMainGui() {
@@ -65,22 +87,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			System.out.println(Frame.getFrames()[i].getTitle().equals("MainMenu"));
-        			if(Frame.getFrames()[i].getTitle().equals("MainMenu")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-        			new AdminMainGui().setVisible(true);
-        		}
+        		new AdminMainGui().setVisible(true);
             }
         });
 	}
@@ -113,26 +120,12 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("WorkOrder")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-                    new WorkOrderMainGui().setVisible(true);
-        		}
+            	new WorkOrderMainGui().setVisible(true);
             }
         });
 	}
 	
-	public static void runWorkOrderNew() {
+	public static void runNewWorkOrderOnePart() {
 		// TODO Auto-generated method stub
 		/* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -160,21 +153,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("newWorkOrder")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-        			new newWorkOrder().setVisible(true);
-        		}
+            	new newWorkOrderOnePart().setVisible(true);
             }
         });
 	}
@@ -301,21 +280,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("Employee")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-                    new EmployeeMain().setVisible(true);
-        		}
+            	new EmployeeMain().setVisible(true);
             }
         });
 	}
@@ -476,21 +441,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("Card")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-        			new CardMain().setVisible(true);
-        		}
+        		new CardMain().setVisible(true);
             }
         });
 	}
@@ -526,6 +477,45 @@ public class MainRunner {
 			public void run() {
             		//runs the find employee method
                     new newCardSelectEmployee().setVisible(true);
+            }
+        });
+	}
+	
+	public static void runGetEmployeeFromCard() {
+		
+		
+    	
+		// TODO Auto-generated method stub
+		/* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+			public void run() {
+            		//runs the find employee method
+            		JFrame test = new getEmployeeFromCard();
+                    test.setVisible(true);                                          
+                   
             }
         });
 	}
@@ -568,7 +558,6 @@ public class MainRunner {
             }
         });
 	}
-	
 	public static void runExtraMain() {
 		// TODO Auto-generated method stub
 		/* Set the Nimbus look and feel */
@@ -597,21 +586,73 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("Extra")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-                    new ExtraMain().setVisible(true);
-        		}
+            	new ExtraMain().setVisible(true);
+            }
+        });
+	}
+	
+	public static void runNewMachine() {
+		// TODO Auto-generated method stub
+		/* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+			public void run() {
+            	new newMachine().setVisible(true);
+            }
+        });
+	}
+	
+	public static void runEditMachine() {
+		// TODO Auto-generated method stub
+		/* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AdminMainGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+			public void run() {
+            	new findMachine().setVisible(true);
             }
         });
 	}

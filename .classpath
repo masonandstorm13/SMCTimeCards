@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-core-1.0.M8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-ndef-1.0.M8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/slf4j-api-1.8.0-beta1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/joda-time-2.10.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

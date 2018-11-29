@@ -133,6 +133,40 @@ public class Acr122Manager {
     }
     
     /**
+     * Dumps cards.
+     * @param args the arguments of the dump command
+     */
+    public static void singleValueDump(String[] args, String test) throws IOException {
+    	
+        // Building the list of keys
+        final List<String> keys = new ArrayList<String>();
+        for (int i = 1; i < args.length; i++) {
+            String k = args[i].toUpperCase();
+            if (MifareUtils.isValidMifareClassic1KKey(k)) {
+                keys.add(k);
+            }
+        }
+        // Adding the common keys
+        keys.addAll(MifareUtils.COMMON_MIFARE_CLASSIC_1K_KEYS);
+        
+        // Card listener for dump
+        MfCardListener listener = new MfCardListener() {
+            @Override
+            public void cardDetected(MfCard mfCard, MfReaderWriter mfReaderWriter) throws IOException {
+                printCardInfo(mfCard);
+                try {
+                    MifareUtils.singleValueDumpMifareClassic1KCard(mfReaderWriter, mfCard, keys, test);
+                } catch (CardException ce) {
+                    System.out.println("Card removed or not present.");
+                }
+            }
+        };
+        
+        // Start listening
+        listen(listener);
+    }
+    
+    /**
      * Writes to cards.
      * @param args the arguments of the write command
      */

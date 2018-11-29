@@ -1,5 +1,6 @@
 package Objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cards {
@@ -7,7 +8,7 @@ public class Cards {
 	public List<EmployeeCard> EmployeeCard;
 	
 	public Cards() {
-		this.EmployeeCard = null;
+		this.EmployeeCard = new ArrayList<EmployeeCard>();
 	}
 	
 	public Cards(List<EmployeeCard> EmployeeCard) {
