@@ -6,9 +6,7 @@ import java.util.List;
 public class WorkOrder {
 	
 	public Integer part;
-	public String workOrderNumber;
 	public String date;
-	public String customer;
 	public String phone;
 	public String fax;
 	public Boolean charge;
@@ -30,9 +28,7 @@ public class WorkOrder {
 	public WorkOrder() {
 		
 		this.part = null;
-		this.workOrderNumber = null;
 		this.date = null;
-		this.customer = null;
 		this.phone = null;
 		this.fax = null;
 		this.charge = null;
@@ -53,14 +49,12 @@ public class WorkOrder {
 		
 	}
 	
-	public WorkOrder(int part, String workOrderNumber, String date, String customer, String phone, String fax, Boolean charge, Boolean cod, Boolean rush, 
+	public WorkOrder(int part, String date, String customer, String phone, String fax, Boolean charge, Boolean cod, Boolean rush, 
 			Boolean overTime, String dueDate, int qty, Boolean smc, Boolean motorFreight, Boolean cpu, Boolean ups, Boolean courier, String description,
 			List<Matterial> matterials, List<Time> times, String completeDate) {
 		
 		this.part = part;
-		this.workOrderNumber = workOrderNumber;
 		this.date = date;
-		this.customer = customer;
 		this.phone = phone;
 		this.fax = fax;
 		this.charge = charge;
@@ -85,16 +79,8 @@ public class WorkOrder {
 		return this.part;
 	}
 	
-	public String getWorkOrderNumber() {
-		return this.workOrderNumber;
-	}
-	
 	public String getDate() {
 		return this.date;
-	}
-	
-	public String getCustomer() {
-		return this.customer;
 	}
 	
 	public String getPhone() {
@@ -169,16 +155,8 @@ public class WorkOrder {
 		this.part = part;
 	}
 	
-	public void setWorkOrderNumber(String workOrderNumber) {
-		this.workOrderNumber = workOrderNumber;
-	}
-	
 	public void setDate(String date) {
 		this.date = date;
-	}
-	
-	public void setCustomer(String customer) {
-		this.customer = customer;
 	}
 	
 	public void setPhone(String phone) {

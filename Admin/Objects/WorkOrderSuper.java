@@ -5,30 +5,48 @@ import java.util.List;
 
 public class WorkOrderSuper {
 	
+	public String workOrderNumber;
 	public Boolean multiPart;
+	public String customer;
 	public List<WorkOrder> workOrderList; 
 	public List<PONumber> poNumberList;
 	public List<InvoiceNumber> invoiceList;
 	public List<DeliveryTicket> deliveryTicketList;
+	public Boolean cashJob;
+	
 	
 	public WorkOrderSuper() {
+		this.workOrderNumber = null;
 		this.multiPart = null;
+		this.customer = null;
 		this.workOrderList = new ArrayList<WorkOrder>();
 		this.poNumberList = new ArrayList<PONumber>();
 		this.invoiceList = new ArrayList<InvoiceNumber>();
-		this.deliveryTicketList = new ArrayList<DeliveryTicket>();		
+		this.deliveryTicketList = new ArrayList<DeliveryTicket>();	
+		this.cashJob = null;
 	}
 	
-	public WorkOrderSuper(Boolean multiPart, List<WorkOrder> workOrderList, List<PONumber> poNumberList, List<InvoiceNumber> invoiceList, List<DeliveryTicket> deliveryTicketList) {
+	public WorkOrderSuper(String workOrderNumber, Boolean multiPart, String customer, List<WorkOrder> workOrderList, List<PONumber> poNumberList, List<InvoiceNumber> invoiceList, List<DeliveryTicket> deliveryTicketList, Boolean cashJob) {
+		this.workOrderNumber = workOrderNumber;
 		this.multiPart = multiPart;
+		this.customer = customer;
 		this.workOrderList = workOrderList;
 		this.poNumberList = poNumberList;
 		this.invoiceList = invoiceList;
 		this.deliveryTicketList = deliveryTicketList;
+		this.cashJob = cashJob;
+	}
+	
+	public String getWorkOrderNumber() {
+		return this.workOrderNumber;
 	}
 	
 	public Boolean getMultiPart() {
 		return this.multiPart;
+	}
+	
+	public String getCustomer() {
+		return this.customer;
 	}
 	
 	public List<WorkOrder> getWorkOrderList(){
@@ -47,8 +65,20 @@ public class WorkOrderSuper {
 		return this.deliveryTicketList;
 	}
 	
+	public Boolean getCashJob() {
+		return this.cashJob;
+	}
+	
+	public void setWorkOrderNumber(String workOrderNumber) {
+		this.workOrderNumber = workOrderNumber;
+	}
+	
 	public void setMultiPart(Boolean multiPart) {
 		this.multiPart = multiPart;
+	}
+	
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 	
 	public void setWorkOrderList(List<WorkOrder> workOrderList) {
@@ -65,6 +95,10 @@ public class WorkOrderSuper {
 	
 	public void setDeliveryTicketList(List<DeliveryTicket> deliveryTicketList) {
 		this.deliveryTicketList = deliveryTicketList;
+	}
+	
+	public void setCashJob(Boolean cashJob) {
+		this.cashJob = cashJob;
 	}
 	
 	public void addWorkOrder(WorkOrder workOrder) {
@@ -98,9 +132,5 @@ public class WorkOrderSuper {
 	public void removeDeliveryTicket(DeliveryTicket deliveryTicket) {
 		this.deliveryTicketList.remove(deliveryTicket);
 	}
-	
-	
-	
-	
 	
 }

@@ -73,7 +73,9 @@ public class MatterialMenu extends javax.swing.JFrame {
         			}     		
             	}
         	}
-    	}   	
+    	}else if(title.equals("multiPartWorkOrder")) {
+    		
+    	}
 
         initComponents();
     }

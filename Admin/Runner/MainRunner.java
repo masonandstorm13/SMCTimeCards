@@ -31,8 +31,9 @@ import Gui.MainGui.EmployeeMain;
 import Gui.MainGui.ExtraMain;
 import Gui.MainGui.WorkInProgressMain;
 import Gui.MainGui.WorkOrderMainGui;
-import Gui.WorkOrderGui.MultiPartWorkOrder.WorkOrderMultiPartSelect;
-import Gui.WorkOrderGui.SinglePartWorkOrder.newWorkOrderOnePart;
+import Gui.WorkOrderGui.workOrderRun;
+import Gui.WorkOrderGui.MultiPart.WorkOrderMultiPartSelect;
+import Gui.WorkOrderGui.SinglePart.newWorkOrderSinglePart;
 import NFC.Acr122Manager;
 import Objects.Employee;
 import Objects.FirstRun;
@@ -153,7 +154,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	new newWorkOrderOnePart().setVisible(true);
+            	new workOrderRun().runSinglePartWorkOrder();
             }
         });
 	}

@@ -8,6 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import Gui.WorkOrderGui.SinglePartWorkOrder.newWorkOrderOnePart;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
+import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 /**
  *
@@ -86,7 +91,7 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(200, 350));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel1.setLayout(new GridLayout(0, 1, 0, 0));
 
         jPanel2.setPreferredSize(new java.awt.Dimension(200, 87));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -130,6 +135,15 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         jPanel1.add(jPanel5);
 
         getContentPane().add(jPanel1);
+        
+        panel = new JPanel();
+        jPanel1.add(panel);
+        panel.setLayout(new GridLayout(0, 1, 0, 0));
+        
+        chckbxCashJob = new JCheckBox("CASH JOB");
+        chckbxCashJob.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 36));
+        chckbxCashJob.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(chckbxCashJob);
 
         pack();
         setLocationRelativeTo(null);
@@ -145,5 +159,7 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private JPanel panel;
+    private JCheckBox chckbxCashJob;
     // End of variables declaration//GEN-END:variables
 }

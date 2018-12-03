@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Gui.WorkOrderGui.MultiPartWorkOrder;
+package Gui.WorkOrderGui.MultiPart;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -69,8 +69,8 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		
-        		newWorkOrderMultiPart multiPart = new newWorkOrderMultiPart(partCount , 0, null);
-        		multiPart.setVisible(true);
+        		//newWorkOrderSinglePart multiPart = new newWorkOrderSinglePart(partCount , 0, null);
+        		//multiPart.setVisible(true);
         		WorkOrderMultiPartSelect.this.dispose();
         	}
         });

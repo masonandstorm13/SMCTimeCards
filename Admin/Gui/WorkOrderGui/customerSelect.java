@@ -10,8 +10,6 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import Custom.FileHandler;
-import Gui.WorkOrderGui.MultiPartWorkOrder.newWorkOrderMultiPart;
-import Gui.WorkOrderGui.SinglePartWorkOrder.newWorkOrderOnePart;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,12 +25,10 @@ import java.awt.event.ItemEvent;
 public class customerSelect extends javax.swing.JFrame {
 
 	public File CustomerLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers");
-	private Boolean multiPart;
     /**
      * Creates new form customerSelect
      */
-    public customerSelect(Boolean multiPart) {
-    	this.multiPart = multiPart;
+    public customerSelect() {
     	setTitle("CustomerSelect");
         initComponents();
     }
@@ -64,15 +60,12 @@ public class customerSelect extends javax.swing.JFrame {
         ComboBoxCustomerSelect.addItemListener(new ItemListener() {
         	public void itemStateChanged(ItemEvent event) {
         		if(event.getStateChange() == ItemEvent.SELECTED) {
-            		System.out.println(ComboBoxCustomerSelect.getSelectedIndex());
-        			System.out.println(ComboBoxCustomerSelect.getItemCount() -1);
-            		if(ComboBoxCustomerSelect.getSelectedIndex() == ComboBoxCustomerSelect.getItemCount()-1) {    
-            			TextFieldCustomerName.setText("");
-            			TextFieldCustomerName.setEditable(true);
-            		}else {
-            			TextFieldCustomerName.setText(ComboBoxCustomerSelect.getSelectedItem().toString());
-            			TextFieldCustomerName.setEditable(false);            			
-            		}
+        			workOrderRun.workOrderSuper.setCustomer(ComboBoxCustomerSelect.getSelectedItem().toString());
+        			if(ComboBoxCustomerSelect.getSelectedIndex() != customerList.length-1) {        			
+        				TextFieldCustomerName.setText(ComboBoxCustomerSelect.getSelectedItem().toString());
+        			}else {
+        				TextFieldCustomerName.setText("");
+        			}
         		}
         	}
         });
@@ -89,25 +82,15 @@ public class customerSelect extends javax.swing.JFrame {
         		//checks if there is a value for customer
         		if(!TextFieldCustomerName.getText().replaceAll(" ", "").equals("")) {
         			if(ComboBoxCustomerSelect.getSelectedIndex() == ComboBoxCustomerSelect.getItemCount()-1) {
-        				if(multiPart == true) {
             				CustomerFullLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + "zzz-WalkIn" + ".JSON");
-            				newWorkOrderMultiPart.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
-            				newWorkOrderMultiPart.TextField_Customer.setText(TextFieldCustomerName.getText()); 
-        				}else {
-            				CustomerFullLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + "zzz-WalkIn" + ".JSON");
-            				newWorkOrderOnePart.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
-            				newWorkOrderOnePart.TextField_Customer.setText(TextFieldCustomerName.getText());   
-        				}				
-        			}else {      				
-        				if(multiPart == true) {
-            				CustomerFullLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + "zzz-WalkIn" + ".JSON");
-            				newWorkOrderMultiPart.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
-            				newWorkOrderMultiPart.TextField_Customer.setText(TextFieldCustomerName.getText());   
-        				}else {
-        					CustomerFullLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + TextFieldCustomerName.getText() + ".JSON");
-            				newWorkOrderOnePart.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
-            				newWorkOrderOnePart.TextField_Customer.setText(TextFieldCustomerName.getText());
-        				}
+            				
+            				workOrderRun.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
+            				workOrderRun.workOrderSuper.setCustomer("Walk In " + TextFieldCustomerName.getText());      		
+        			}else {
+        				CustomerFullLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + TextFieldCustomerName.getText() + ".JSON");
+        				
+        				workOrderRun.selectedCustomer = fileHandler.getCustomer(CustomerFullLocation);
+        				workOrderRun.workOrderSuper.setCustomer(TextFieldCustomerName.getText());  
         			}
         			//finds current frame out of listed frames and disposes of it
             		for(int i = 0; i < Frame.getFrames().length; i++) {
