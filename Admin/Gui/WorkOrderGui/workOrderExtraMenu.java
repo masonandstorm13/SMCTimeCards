@@ -7,7 +7,6 @@ package Gui.WorkOrderGui;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import Gui.WorkOrderGui.SinglePartWorkOrder.newWorkOrderOnePart;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import javax.swing.JCheckBox;
@@ -48,13 +47,8 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		if(title.equals("singlePartNewWorkOrder")) {
-        			//adds the work order to super work order for use in material set up
-        			if(newWorkOrderOnePart.workOrderSuper.workOrderList.size() == 0) {
-        				newWorkOrderOnePart.workOrderSuper.addWorkOrder(newWorkOrderOnePart.workOrder);
-        			}else {
-        				newWorkOrderOnePart.workOrderSuper.workOrderList.set(0, newWorkOrderOnePart.workOrder);
-        			}
-        			MatterialMenu matterialMenu = new MatterialMenu(newWorkOrderOnePart.workOrderSuper, 0, title);
+
+        			MatterialMenu matterialMenu = new MatterialMenu(0);
         			matterialMenu.setVisible(true);
         		}
         		System.out.println(this.getClass().getSuperclass().getName());

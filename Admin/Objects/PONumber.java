@@ -3,7 +3,7 @@ package Objects;
 public class PONumber {
 	
 	public String poNumber;
-	public Integer partAssociated ;
+	public Integer partAssociated;
 	
 	public PONumber() {
 		this.poNumber = null;

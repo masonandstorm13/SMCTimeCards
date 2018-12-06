@@ -244,7 +244,6 @@ public class editMachine extends javax.swing.JFrame {
         jLabel2.setText("Machine Type:");
         jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel11.add(jLabel2);
-
         jPanel4.add(jPanel11);
 
         jPanel12.setPreferredSize(new java.awt.Dimension(500, 50));

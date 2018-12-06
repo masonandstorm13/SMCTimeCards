@@ -5,19 +5,22 @@ public class Matterial {
 	public String description;
 	public Double cost;
 	public Double charge;
+	public Integer part;
 	
 	public Matterial() {
 		
 		this.description = null;
 		this.cost = null;
 		this.charge = null;
+		this.part = null;
 	
 	}
 	
-	public Matterial(String description, Double cost, Double charge) {
+	public Matterial(String description, Double cost, Double charge, Integer part) {
 		this.description = description;
 		this.cost = cost;
 		this.charge = charge;
+		this.part = part;
 	}
 	
 	public String getDescription() {
@@ -32,6 +35,10 @@ public class Matterial {
 		return this.charge;
 	}
 	
+	public Integer getPart() {
+		return this.part;
+	}
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -42,6 +49,10 @@ public class Matterial {
 	
 	public void setCharge(Double charge) {
 		this.charge = charge;
+	}
+	
+	public void setPart(Integer part) {
+		this.part = part;
 	}
 }
 
