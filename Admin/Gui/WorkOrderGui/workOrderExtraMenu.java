@@ -12,6 +12,9 @@ import java.awt.GridLayout;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.Dimension;
 
 /**
  *
@@ -25,8 +28,7 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
     /**
      * Creates new form workOrderExtraMenu
      */
-    public workOrderExtraMenu(String title) {
-    	this.title = title;
+    public workOrderExtraMenu() {
     	setTitle("workOrderExtra");
         initComponents();
     }
@@ -46,12 +48,9 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         ButtonMatterial.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		if(title.equals("singlePartNewWorkOrder")) {
-
-        			MatterialMenu matterialMenu = new MatterialMenu(0);
-        			matterialMenu.setVisible(true);
-        		}
-        		System.out.println(this.getClass().getSuperclass().getName());
+        		
+        		MatterialMenu matterialMenu = new MatterialMenu(workOrderRun.currentPart);
+        		matterialMenu.setVisible(true); 
         	}
         });
         jPanel3 = new javax.swing.JPanel();
@@ -84,7 +83,7 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(200, 350));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 350));
+        jPanel1.setMinimumSize(new Dimension(200, 400));
         jPanel1.setLayout(new GridLayout(0, 1, 0, 0));
 
         jPanel2.setPreferredSize(new java.awt.Dimension(200, 87));
@@ -135,9 +134,37 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
         panel.setLayout(new GridLayout(0, 1, 0, 0));
         
         chckbxCashJob = new JCheckBox("CASH JOB");
+        chckbxCashJob.addItemListener(new ItemListener() {
+        	public void itemStateChanged(ItemEvent e) {
+        		if(e.getStateChange() == ItemEvent.SELECTED) {
+        			workOrderRun.workOrderSuper.setCashJob(true);
+        		}else if(e.getStateChange() == ItemEvent.DESELECTED) {
+        			workOrderRun.workOrderSuper.setCashJob(false);
+        		}        		
+        	}
+        });
         chckbxCashJob.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 36));
         chckbxCashJob.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(chckbxCashJob);
+        
+        panel_1 = new JPanel();
+        jPanel1.add(panel_1);
+        panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+        
+        chckbxWorkInProgress = new JCheckBox("In Progress");
+        chckbxWorkInProgress.setSelected(true);
+        chckbxWorkInProgress.addItemListener(new ItemListener() {
+        	public void itemStateChanged(ItemEvent e) {
+        		if(e.getStateChange() == ItemEvent.SELECTED) {
+        			workOrderRun.workOrderSuper.setInProgress(true);
+        		}else if(e.getStateChange() == ItemEvent.DESELECTED) {
+        			workOrderRun.workOrderSuper.setInProgress(false);
+        		}        		
+        	}
+        });
+        chckbxWorkInProgress.setHorizontalAlignment(SwingConstants.CENTER);
+        chckbxWorkInProgress.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 36));
+        panel_1.add(chckbxWorkInProgress);
 
         pack();
         setLocationRelativeTo(null);
@@ -155,5 +182,7 @@ public class workOrderExtraMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private JPanel panel;
     private JCheckBox chckbxCashJob;
+    private JPanel panel_1;
+    private JCheckBox chckbxWorkInProgress;
     // End of variables declaration//GEN-END:variables
 }

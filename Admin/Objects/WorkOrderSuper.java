@@ -13,6 +13,7 @@ public class WorkOrderSuper {
 	public List<InvoiceNumber> invoiceList;
 	public List<DeliveryTicket> deliveryTicketList;
 	public Boolean cashJob;
+	public Boolean inProgress;
 	
 	
 	public WorkOrderSuper() {
@@ -23,7 +24,7 @@ public class WorkOrderSuper {
 		this.poNumberList = new ArrayList<PONumber>();
 		this.invoiceList = new ArrayList<InvoiceNumber>();
 		this.deliveryTicketList = new ArrayList<DeliveryTicket>();	
-		this.cashJob = null;
+		this.cashJob = false;
 	}
 	
 	public WorkOrderSuper(String workOrderNumber, Boolean multiPart, String customer, List<WorkOrder> workOrderList, List<PONumber> poNumberList, List<InvoiceNumber> invoiceList, List<DeliveryTicket> deliveryTicketList, Boolean cashJob) {
@@ -69,6 +70,10 @@ public class WorkOrderSuper {
 		return this.cashJob;
 	}
 	
+	public Boolean getInProgress() {
+		return this.inProgress;
+	}
+	
 	public void setWorkOrderNumber(String workOrderNumber) {
 		this.workOrderNumber = workOrderNumber;
 	}
@@ -99,6 +104,10 @@ public class WorkOrderSuper {
 	
 	public void setCashJob(Boolean cashJob) {
 		this.cashJob = cashJob;
+	}
+	
+	public void setInProgress(Boolean inProgress) {
+		this.inProgress = inProgress;
 	}
 	
 	public void addWorkOrder(WorkOrder workOrder) {

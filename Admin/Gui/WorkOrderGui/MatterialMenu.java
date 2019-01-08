@@ -16,10 +16,12 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
@@ -51,17 +53,13 @@ public class MatterialMenu extends javax.swing.JFrame {
 	public MatterialMenu(int part) {
     	this.part = part;
     	
-    	//sets up table and objects 
-    	if(part == 0) {
-    		if(workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.size() != 0) {
-        		for(int i = 0; i < workOrderRun.workOrderSuper.workOrderList.size(); i++) {
-        			if(workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials != null) {
-        				for(int g = 0; g < workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.size(); g++) {
-                			matterialList.add(workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.get(g));
-                		}
-        			}     		
-            	}
-        	}
+    	//sets up table and objects
+    	for(int i = 0; i <= workOrderRun.totalParts; i++) {
+    		if(!workOrderRun.workOrderSuper.getWorkOrderList().get(i).matterials.isEmpty()) {
+    			for(Matterial matterial : workOrderRun.workOrderSuper.getWorkOrderList().get(i).getMatterialls()) {
+    				matterialList.add(matterial);
+    			}
+    		}
     	}
 
         initComponents();
@@ -118,8 +116,8 @@ public class MatterialMenu extends javax.swing.JFrame {
         	public void mouseClicked(MouseEvent e) {
         		//removes material from both and then re sets the table
         		if(table.getSelectedRow() != -1) {
+        			workOrderRun.workOrderSuper.getWorkOrderList().get(matterialList.get(table.getSelectedRow()).getPart()).matterials.remove(matterialList.get(table.getSelectedRow()));  
         			matterialList.remove(table.getSelectedRow());
-            		workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.remove(table.getSelectedRow());        		
     	        	setUpTable();
         		}
         	}
@@ -142,10 +140,19 @@ public class MatterialMenu extends javax.swing.JFrame {
         		cost.setText("0.00");
         		JTextField charge = new JFormattedTextField(NumberFormat.getNumberInstance());
         		charge.setText("0.00");
+        		
+        		//sets up combo box
+        		Vector<String> letterPart = new Vector<String>();
+        		for(int i = 0; i <= workOrderRun.totalParts; i++) {
+        			letterPart.add(workOrderRun.alphabet[i]);
+        		}
+        		JComboBox<String> selectedPart = new JComboBox<String>(letterPart);
+        		
         		Object[] message = {
         		    "Description:", description,
         		    "Cost:", cost,
-        		    "Charge:", charge
+        		    "Charge:", charge,
+        		    "Part:", selectedPart
         		};
 
         			int option = JOptionPane.showConfirmDialog(null, message, "Add Matterial", JOptionPane.OK_CANCEL_OPTION);
@@ -154,10 +161,10 @@ public class MatterialMenu extends javax.swing.JFrame {
         			        matterial.setDescription(description.getText());
         			        matterial.setCost(Double.valueOf(cost.getText()));
         			        matterial.setCharge(Double.valueOf(charge.getText()));
-        			        matterial.setPart(part);
+        			        matterial.setPart(selectedPart.getSelectedIndex());
         			        
-        			        workOrderRun.workOrderSuper.getWorkOrderList().get(part).addMatterial(matterial);
-        			        System.out.println(workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.size());
+        			        workOrderRun.workOrderSuper.getWorkOrderList().get(selectedPart.getSelectedIndex()).addMatterial(matterial);
+        			        System.out.println(workOrderRun.workOrderSuper.getWorkOrderList().get(selectedPart.getSelectedIndex()).matterials.size());
     			        	matterialList.add(matterial);
     			        	setUpTable();
         			    } else {
@@ -178,7 +185,7 @@ public class MatterialMenu extends javax.swing.JFrame {
         		if(!table.getSelectionModel().isSelectionEmpty()) {
         			//sets up a new material based of selected index
         			Matterial selectedMatterial = new Matterial();
-        			selectedMatterial = workOrderRun.workOrderSuper.getWorkOrderList().get(part).matterials.get(table.getSelectedRow());
+        			selectedMatterial = matterialList.get(table.getSelectedRow());
         			
         			//sets up option pane for single part work orders
             		JTextField description = new JTextField();
@@ -187,10 +194,20 @@ public class MatterialMenu extends javax.swing.JFrame {
             		cost.setText("0.00");
             		JTextField charge = new JFormattedTextField(NumberFormat.getNumberInstance());
             		charge.setText("0.00");
+            		
+            		//sets up combo box
+            		Vector<String> letterPart = new Vector<String>();
+            		for(int i = 0; i <= workOrderRun.totalParts; i++) {
+            			letterPart.add(workOrderRun.alphabet[i]);
+            		}
+            		JComboBox<String> selectedPart = new JComboBox<String>(letterPart);
+            		selectedPart.setSelectedIndex(selectedMatterial.getPart());
+            		
             		Object[] message = {
             		    "Description:", description,
             		    "Cost:", cost,
-            		    "Charge:", charge
+            		    "Charge:", charge,
+            		    "Part:", selectedPart
             		};
             			//sets up option pane for editing material
             			int option = JOptionPane.showConfirmDialog(null, message, "Add Matterial", JOptionPane.OK_CANCEL_OPTION);
@@ -199,11 +216,19 @@ public class MatterialMenu extends javax.swing.JFrame {
             					Matterial newMatterial = new Matterial();
             					newMatterial.setDescription(description.getText());
             					newMatterial.setCost(Double.valueOf(cost.getText()));
-            					newMatterial.setCharge(Double.valueOf(charge.getText()));            			             					
+            					newMatterial.setCharge(Double.valueOf(charge.getText()));      
+            					newMatterial.setPart(selectedPart.getSelectedIndex());
             					
-                    			//finds material in array and sets the value 
-            					workOrderRun.workOrderSuper.getWorkOrderList().get(part).replaceMatterial(selectedMatterial, newMatterial);
-            			        matterialList.set(matterialList.indexOf(selectedMatterial), newMatterial);
+            					//if the part is changed
+            					if(newMatterial.getPart() != selectedMatterial.getPart()) {
+            						//removes old material from workorder and adds new material to work order
+            						workOrderRun.workOrderSuper.getWorkOrderList().get(selectedMatterial.getPart()).removeMatterial(selectedMatterial);
+            						workOrderRun.workOrderSuper.getWorkOrderList().get(newMatterial.getPart()).addMatterial(newMatterial);
+            					}else {
+            						//finds material in array and sets the value 
+                					workOrderRun.workOrderSuper.getWorkOrderList().get(selectedMatterial.getPart()).replaceMatterial(selectedMatterial, newMatterial);  
+            					}
+            					matterialList.set(matterialList.indexOf(selectedMatterial), newMatterial);
             			        setUpTable();
             			        
             			    } else {
@@ -239,7 +264,7 @@ public class MatterialMenu extends javax.swing.JFrame {
         			}else if(f == 2) {
         				o[i][f] = matterialList.get(i).getCharge();
         			}else if(f == 3) {
-        				o[i][f] = matterialList.get(i).getPart();
+        				o[i][f] = workOrderRun.alphabet[matterialList.get(i).getPart()];
         			}
         		}
         	} 

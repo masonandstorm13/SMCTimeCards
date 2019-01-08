@@ -1,20 +1,9 @@
 package Runner;
 
 import java.awt.Frame;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import Custom.FileHandler;
 import Gui.CardGui.getEmployeeFromCard;
@@ -33,8 +22,6 @@ import Gui.MainGui.WorkInProgressMain;
 import Gui.MainGui.WorkOrderMainGui;
 import Gui.WorkOrderGui.workOrderRun;
 import Gui.WorkOrderGui.MultiPart.WorkOrderMultiPartSelect;
-import Gui.WorkOrderGui.SinglePart.newWorkOrderSinglePart;
-import NFC.Acr122Manager;
 import Objects.Employee;
 import Objects.FirstRun;
 
@@ -154,7 +141,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	new workOrderRun().runSinglePartWorkOrder();
+            	new workOrderRun(0).runSinglePartWorkOrder();
             }
         });
 	}
@@ -187,21 +174,8 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("MultiPartSelect")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-                    new WorkOrderMultiPartSelect().setVisible(true);
-        		}
+            	//creates a new work order part select
+                new WorkOrderMultiPartSelect().setVisible(true);      		
             }
         });
 	}

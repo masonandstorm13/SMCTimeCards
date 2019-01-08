@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import Gui.WorkOrderGui.workOrderRun;
 import Runner.MainRunner;
 
 import java.awt.event.MouseAdapter;
@@ -67,11 +68,11 @@ public class WorkOrderMultiPartSelect extends javax.swing.JFrame {
         ButtonSubmit = new java.awt.Button();
         ButtonSubmit.addMouseListener(new MouseAdapter() {
         	@Override
-        	public void mouseClicked(MouseEvent arg0) {
-        		
-        		//newWorkOrderSinglePart multiPart = new newWorkOrderSinglePart(partCount , 0, null);
-        		//multiPart.setVisible(true);
-        		WorkOrderMultiPartSelect.this.dispose();
+        	public void mouseClicked(MouseEvent arg0) {      
+        		if(partCount > 0) {
+        			new workOrderRun(partCount).runMultiPartWorkOrder();
+            		WorkOrderMultiPartSelect.this.dispose(); 
+        		}
         	}
         });
         jMenuBar1 = new javax.swing.JMenuBar();

@@ -143,6 +143,10 @@ public class WorkOrder {
 		return this.matterials;
 	}
 	
+	public Matterial getMatterial(Matterial matterial) {
+		return matterials.get(matterials.indexOf(matterial));
+	}
+	
 	public List<Time> getTimes(){
 		return this.times;
 	}
