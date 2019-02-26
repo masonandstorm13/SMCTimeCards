@@ -20,9 +20,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import Custom.FileHandler;
 import Custom.StringByteConvert;
-import Objects.Cards;
 import Objects.Employee;
-import Objects.EmployeeCard;
 import Runner.MainRunner;
 
 import java.awt.event.MouseAdapter;
@@ -120,13 +118,13 @@ public class newEmployee extends javax.swing.JFrame {
         	public void mouseClicked(MouseEvent e) {
         		boolean canSave = true;
         		//check if all values are filled
-        		if((TextField_Name.getText().equals(""))) {
+        		if((TextField_Name.getText().trim().equals(""))) {
         			JOptionPane.showMessageDialog(getParent(), "Name Text Required");
         			canSave =false;
-        		}else if(TextField_Charge.getText().equals("")) {
+        		}else if(TextField_Charge.getText().trim().equals("")) {
         			JOptionPane.showMessageDialog(getParent(), "Charge Text Required");
         			canSave =false;
-        		}else if(TextField_Hourly.getText().equals("")) {
+        		}else if(TextField_Hourly.getText().trim().equals("")) {
         			JOptionPane.showMessageDialog(getParent(), "Hourly Text Required");
         			canSave =false;
 
@@ -151,85 +149,47 @@ public class newEmployee extends javax.swing.JFrame {
         			File newEmployeeDirectory = new File(employeeDirectory.getAbsoluteFile() + "\\" + TextField_Name.getText());
         			if(!newEmployeeDirectory.exists()) {
         				newEmployeeDirectory.mkdir();
+        			}else {
+        				JOptionPane.showMessageDialog(newEmployee.this, "Employee Allready Exist");
+        				canSave = false;
         			}
         			
         			//checks for values, then forms object and writes to nas 
-        			if(hourly != null && charge != null) {
-        				canSave = true;
+        			if(canSave == true) {
         				//copy and past profile picture to nas if file is selected      				
-        				if(profilePicture.length() != 0) {
-        					File dest = new File(newEmployeeDirectory.getAbsolutePath() + "\\" + TextField_Name.getText() + "ProfilePicture." + "jpg");
+        					File dest = null;
+        					if(resizedImage != null) {
+        						dest = new File(newEmployeeDirectory.getAbsolutePath() + "\\" + TextField_Name.getText() + "ProfilePicture." + "jpg");
+        					}
         					//creates an employee path
                 			File newEmployeeLocation = new File(newEmployeeDirectory.getAbsolutePath() + "\\" + TextField_Name.getText() + ".json");
                 			//checks if the employee already exist
                 			if(newEmployeeLocation.exists() == false) {
                 				try {
                 					FileHandler fileHandler = new FileHandler();
-                					ImageIO.write(resizedImage, "jpg", dest);
-                					StringByteConvert convert = new StringByteConvert();
-                					String cardValue = convert.ByteConvert(TextField_Name.getText());
+                					if(resizedImage != null) {
+                						ImageIO.write(resizedImage, "jpg", dest);
+                					}               					
+                					byte[] cardValue = TextField_Name.getText().getBytes("US-ASCII");
         					    	Employee newEmployee = new Employee();
         					    	newEmployee.name = TextField_Name.getText();
         					    	newEmployee.charge = charge;
                     				newEmployee.hourlyPay = hourly;
-                    				newEmployee.pictureLocaitonPath = dest.getAbsolutePath();
-                    				newEmployee.cardValue = cardValue;                    			                   			                    			
-                    			                    			
-                    				//adds to card list
-                    				Cards cardfile = fileHandler.getCards(cardFileLocation);
-                    				EmployeeCard employeeCard = new EmployeeCard();
-                    				employeeCard.cardValue = cardValue;
-                    				employeeCard.employeePath = newEmployeeLocation.getAbsolutePath();
-                    				cardfile.addEmployeeCard(employeeCard);
+                    				if(resizedImage != null) {
+                    					newEmployee.pictureLocaitonPath = dest.getAbsolutePath();
+                    				}else {
+                    					newEmployee.pictureLocaitonPath = null;
+                    				}
                     			
                     				//writes files
                     				fileHandler.writeFile(newEmployeeLocation, newEmployee);
-                    				fileHandler.writeFile(cardFileLocation, cardfile);
                 				} catch (IOException c) {
         							canSave = false;
         					    	c.printStackTrace();
         						}
                 			}
-                			else {
-                				JOptionPane.showMessageDialog(newEmployee.this, "Employee Allready Exist");
-                				canSave = false;
-                			}
         				}
-        				//runs if there is no profile picture selected
-        				else {             			
-        					//creates an employee path
-                			File newEmployeeLocation = new File(newEmployeeDirectory.getAbsolutePath() + "\\" + TextField_Name.getText() + ".json");
-                			//checks if the employee already exist
-                			if(newEmployeeLocation.exists() == false) {
-                				FileHandler fileHandler = new FileHandler();
-                				StringByteConvert convert = new StringByteConvert();
-                				String cardValue = convert.ByteConvert(TextField_Name.getText());
-                				Employee newEmployee = new Employee();
-                				newEmployee.name = TextField_Name.getText();
-                				newEmployee.charge = charge;
-                				newEmployee.hourlyPay = hourly;
-                				newEmployee.pictureLocaitonPath = null;
-                				newEmployee.cardValue = cardValue;
-                			    			                    			
-                				//adds to card list
-                				Cards cardfile = fileHandler.getCards(cardFileLocation);
-                				EmployeeCard employeeCard = new EmployeeCard();
-                				employeeCard.cardValue = cardValue;
-                				employeeCard.employeePath = newEmployeeLocation.getAbsolutePath();
-                				cardfile.addEmployeeCard(employeeCard);
-                			
-                				//writes files
-                				fileHandler.writeFile(newEmployeeLocation, newEmployee);
-                				fileHandler.writeFile(cardFileLocation, cardfile);
-                			}else {
-                				JOptionPane.showMessageDialog(newEmployee.this, "Employee Allready Exist");
-                				canSave = false;
-                			}
-        					
-        				}
-        			}
-
-        		}
+        			}    
         		if(canSave == true) {
         			newEmployee.this.dispose();
             		MainRunner.runEmployeeMain();

@@ -4,16 +4,22 @@
  * and open the template in the editor.
  */
 package Gui.CardGui;
+import javax.smartcardio.CardException;
+import javax.smartcardio.CardTerminal;
+import javax.smartcardio.TerminalFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import Runner.MainRunner;
-import NFC.Acr122Manager;
+import NFC.nfcLibrary;
 
+import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,42 +30,47 @@ import java.util.TimerTask;
 @SuppressWarnings("serial")
 public class writeCard extends javax.swing.JFrame {
 	
-	public String dataCardValue;
-	public TimerTask timerTask;
+	static CardTerminal terminal;
     /**
      * Creates new form writeCard
+     * @throws CardException 
      */
-    public writeCard(String cardValue) {
-    	//sets up values for nfc card defaults
-		final String sector = "01" ;
-    	final String block = "00";   	
-    	String keyTmp = "FFFFFFFFFFFF" ;
-    	String dataTmp = cardValue;
-    	
-    	dataCardValue = cardValue;
+    public writeCard(String cardValue) throws CardException {
+    	setVisible(true);
     	setTitle("writeCard");
     	initComponents();
-    	//sets up timer
-    	Timer timer = new Timer();
-    	//starts timer task for checking if frame is active then runs the write card method
-    	timerTask = new TimerTask() {
-    		public void run() {
-    			if(writeCard.this.isActive() == true) {
-    				try {    					
-            			Acr122Manager.writeToCards(sector,block,keyTmp,dataTmp);
-            		} catch (IOException exeption) {
-            			// TODO Auto-generated catch block
-            			exeption.printStackTrace();
-            		}
-    			}else {
-    				
-    			}
-    		}
-    	};
     	
-    	timer.schedule(timerTask, 500);
     	
+    	writeCardNewCard(cardValue);
     }
+    
+    public static void writeCardNewCard(String cardValue) throws CardException {
+    	byte[] masterByte = new byte[16];
+		
+		for(int i = 0; i < cardValue.getBytes().length; i++) {
+			masterByte[i] = cardValue.getBytes()[i];
+		}
+    	
+    	TerminalFactory factory = TerminalFactory.getDefault();
+        List<CardTerminal> terminals = factory.terminals().list();
+        terminal = terminals.get(0);
+        nfcLibrary nfcLibrary = new nfcLibrary(terminal, "T=1", (byte) 0x00, (byte) 0x04, masterByte, 1);
+        new Thread(nfcLibrary).start();
+    }
+    
+    public static void hereIsYourValue(String value, String cardValue) throws CardException {
+    	if(value.equals("9000")) {
+    		JOptionPane.showMessageDialog(null, "Card Created", 
+    	            "Notification", JOptionPane.CLOSED_OPTION);
+        	MainRunner.runNewCardSelectEmployee();
+    		for(Frame frame : writeCard.getFrames()) {
+    			frame.dispose();
+    		}
+        }else {
+        	writeCardNewCard(cardValue);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,15 +92,6 @@ public class writeCard extends javax.swing.JFrame {
         MenuBack.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		timerTask.cancel();
-        		if(Acr122Manager.getDevice() != null) {
-        			try {
-    					Acr122Manager.getDevice().close();
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
-        		}
         		MainRunner.runNewCardSelectEmployee();
         		writeCard.this.dispose();
         	}

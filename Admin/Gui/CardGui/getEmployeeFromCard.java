@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 package Gui.CardGui;
+import javax.smartcardio.CardException;
+import javax.smartcardio.CardTerminal;
+import javax.smartcardio.TerminalFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import Custom.CardHandler;
 import Runner.MainRunner;
-import NFC.Acr122Manager;
-import NFC.MifareUtils;
+import NFC.nfcLibrary;
 
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
@@ -18,6 +19,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,40 +32,46 @@ import java.util.TimerTask;
 public class getEmployeeFromCard extends javax.swing.JFrame {
 	
 	public static String cardValue;
-	public TimerTask timerTask;
-	public static TimerTask timerValueCheckTask;
+	static CardTerminal terminal;
+	private static Thread cardThread;
     /**
      * Creates new form writeCard
+     * @throws CardException 
+     * @throws UnsupportedEncodingException 
      */
-    public getEmployeeFromCard() {
-    	// Dump Card
-    	String[] keys = {"FF00A1A0B000", "FF00A1A0B001" , "FF00A1A0B099", "FF860000050100006000"};
-    	
-    	setTitle("writeCard");
+    public getEmployeeFromCard() throws UnsupportedEncodingException, CardException { 
+    	setVisible(true);
+
+    	setTitle("readCard");
     	initComponents();
     	
-    	//sets up timer
-    	Timer timerRead = new Timer();
-    	//starts timer task for checking if frame is active then runs the write card method
-    	timerTask = new TimerTask() {
-    		public void run() {
-    			System.out.println("rnnning");
-    			if(getEmployeeFromCard.this.isActive() == true) {
-    				try {    					
-    					Acr122Manager.singleValueDump(keys, cardValue);
-            		} catch (IOException exeption) {
-            			// TODO Auto-generated catch block
-            			exeption.printStackTrace();
-            		}
-    			}else {
-    				
-    			}
-    		}
-    	};
-    	
-    	timerRead.schedule(timerTask, 500);
+    	readCard();
+    }
+    
+    
+    public static void readCard() throws CardException, UnsupportedEncodingException {
+    	TerminalFactory factory = TerminalFactory.getDefault();
+        List<CardTerminal> terminals = factory.terminals().list();
+        terminal = terminals.get(0);
+        nfcLibrary nfcLibrary = new nfcLibrary(terminal, "T=1", (byte) 0x00, (byte) 0x04, null, 0);
+        cardThread = new Thread(nfcLibrary);
+        cardThread.start();
     }
 
+    
+    public static void hereIsYourValue(String value) throws CardException, UnsupportedEncodingException {
+    	System.out.println("re Run");
+    	if(value.length() > 2) {
+    		JOptionPane.showMessageDialog(null, "Employee: " + value, 
+    	            "Card Value", JOptionPane.CLOSED_OPTION);
+        	MainRunner.runCardMain();
+    		for(Frame frame : getEmployeeFromCard.getFrames()) {
+    			frame.dispose();
+    		}
+        }else {
+        	readCard();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,14 +93,7 @@ public class getEmployeeFromCard extends javax.swing.JFrame {
         	@SuppressWarnings("deprecation")
 			@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		timerTask.cancel();
-        		try {
-					Acr122Manager.getDevice().close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		MainRunner.runNewCardSelectEmployee();
+        		MainRunner.runCardMain();
         		getEmployeeFromCard.this.dispose();
         	}
         });
@@ -122,21 +124,6 @@ public class getEmployeeFromCard extends javax.swing.JFrame {
 
     }// </editor-fold>//GEN-END:initComponents
     
-    public static void startChecker() {
-    	Timer timerValueCheck = new Timer();
-    	//starts timer task for checking if frame is active then runs the write card method
-    	timerValueCheckTask = new TimerTask() {
-    		public void run() {
-    			System.out.println("testthintotn");
-    			if(cardValue != null) {
-    				CardHandler cardHandle = new CardHandler();
-    				System.out.println(cardHandle.getEmployeeFromCardVlaue(cardValue).getName());
-    			}
-    		}
-    	};
-    	
-    	timerValueCheck.schedule(timerValueCheckTask, 500);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MenuBack;

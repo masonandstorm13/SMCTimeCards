@@ -20,18 +20,19 @@ import Objects.WorkOrderSuper;
 
 public class workOrderRun {
 	
-	public static WorkOrderSuper workOrderSuper;
-	public static Customer selectedCustomer;
-	public static WorkInProgress workInProgress;
-	public static int currentPart;
-	public static int totalParts;
+	public static WorkOrderSuper workOrderSuper = null;
+	public static Customer selectedCustomer = null;
+	public static WorkInProgress workInProgress = null;
+	public static int currentPart = 0;
+	public static int totalParts = 0;
 	 
-	private String defaultWorkOrderDirectory;
-	private String defaultCustomerDirectory;
-	private String workInProgressDirectory;
+	private static String defaultWorkOrderDirectory;
+	private static String defaultCustomerDirectory;
+	private static String workInProgressDirectory;
 	
-	private FileHandler fileHandler = new FileHandler();
+	private static FileHandler fileHandler = new FileHandler();
 	static JFrame[] jFrameList = null;
+	public static Boolean[] saveList = null;
 	public static JFrame extraMenu;
 	
 	public static String mainWorkOrderDate = "";
@@ -46,6 +47,7 @@ public class workOrderRun {
 		workOrderSuper = new WorkOrderSuper();
 		workOrderSuper.setCashJob(false);
 		workOrderSuper.setInProgress(true);
+		selectedCustomer = null;
 		
 		//sets up directories
 		defaultWorkOrderDirectory = "\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\WorkOrders\\";
@@ -72,13 +74,16 @@ public class workOrderRun {
 	public void setUpFrames() {
 		//sets up frames
 				jFrameList = new JFrame[totalParts+1];
+				saveList = new Boolean[totalParts+1];
 				extraMenu = new workOrderExtraMenu();
 
 				//sets up all new work orders and panels
 				for(int i = 0; i <= totalParts; i++) {
+					WorkOrder workOrder = new WorkOrder();
+					workOrder.setPart(i);
 					//adds all work orders
-					workOrderRun.workOrderSuper.addWorkOrder(new WorkOrder());
-					
+					workOrderRun.workOrderSuper.addWorkOrder(workOrder);
+					saveList[i] = false;
 					//sets up and adds frames
 					jFrameList[i] = new newWorkOrder(i);
 					jFrameList[i].setName("New Work Order Part: " + alphabet[i]);
@@ -88,26 +93,7 @@ public class workOrderRun {
 						@Override
 			            public void windowClosed(WindowEvent e)
 			            {
-							Boolean shouldSave = true;
-							//loop for checking all values in work order set
-							for(int i = 0; i < workOrderSuper.getWorkOrderList().size(); i++) {
-								//if any work order is found to have a null value for the description the work order will not be saved 
-								if(workOrderSuper.getWorkOrderList().get(i).getDescription() != null) {
-									shouldSave = true;
-								}else {
-									shouldSave = false;
-								}
-								
-								//exits loop if should save ever equals false
-								if(shouldSave == false){
-									break;
-								}
-							}
 							
-							//saves the work order if all values are here
-							if(shouldSave == true) {
-								saveWorkOrder();
-							}
 							
 			            }
 					});
@@ -120,18 +106,33 @@ public class workOrderRun {
 				extraMenu.setVisible(true);
 	}
 	
-	public void saveWorkOrder() {
+	public static void saveWorkOrder() {
 		selectedCustomer.addWorkOrdersDirectories(workOrderSuper);		
 		if(selectedCustomer.equals("WalkIn")) {
 			fileHandler.writeFile(new File(defaultCustomerDirectory + "zzz-WalkIn" + ".JSON"), selectedCustomer);
 		}else {
 			fileHandler.writeFile(new File(defaultCustomerDirectory + selectedCustomer.getName() + ".JSON"), selectedCustomer);
 		}
-		
+		defaultWorkOrderDirectory = defaultWorkOrderDirectory + workOrderSuper.getWorkOrderNumber() + "\\";
+		if(!new File(defaultWorkOrderDirectory).exists()) {
+			new File(defaultWorkOrderDirectory).mkdirs();
+		}
 		fileHandler.writeFile(new File(defaultWorkOrderDirectory + workOrderSuper.getWorkOrderNumber() + ".JSON") , workOrderSuper);	
-		if(workOrderSuper.getInProgress() == true) {
-			workInProgress.addWorkOrder(workOrderSuper);
-			fileHandler.writeFile(new File(workInProgressDirectory), workInProgress);
+		if(workOrderSuper.getInProgress() == true ) {
+			//checks if work order is already in work in progress list 
+			Boolean saveInProgress = true;
+			for(WorkOrderSuper workOrder : workInProgress.workOrders) {
+				if(workOrder.getWorkOrderNumber() == workOrderSuper.getWorkOrderNumber()) {
+					saveInProgress = false;
+					break;
+				}
+			}
+			//saves the work order to work in progress
+			if(saveInProgress == true) {
+				workInProgress.addWorkOrder(workOrderSuper);
+				fileHandler.writeFile(new File(workInProgressDirectory), workInProgress);
+			}
+
 		}
 	}
 
@@ -175,7 +176,7 @@ public class workOrderRun {
 												for(Component componentDate : ((Container) componentDate_WorkOrderNumber).getComponents()) {
 													//loop for Date TextField
 													if(componentDate instanceof JFormattedTextField) {
-														((JFormattedTextField) componentDate).setText(mainWorkOrderDate);
+														//((JFormattedTextField) componentDate).setText(mainWorkOrderDate);
 													}
 												}
 											}
@@ -248,10 +249,9 @@ public class workOrderRun {
 				workOrderSuper.getWorkOrderList().get(e).setPhone(mainWorkOrderPhone);
 				workOrderSuper.getWorkOrderList().get(e).setFax(mainWorkOrderFax);
 				
-			}
-			workOrderSuper.setWorkOrderNumber(mainWorkOrderNumber);
-			
+			}	
 		}
+		workOrderSuper.setWorkOrderNumber(mainWorkOrderNumber);
 	}
 
 }

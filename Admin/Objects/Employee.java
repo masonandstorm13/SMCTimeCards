@@ -7,22 +7,19 @@ public class Employee {
 	public double charge;
 	public double hourlyPay;
 	public String pictureLocaitonPath;
-	public String cardValue;
 	
 	public Employee() {
 		this.name = "";
 		this.charge = 0;
 		this.hourlyPay = 0;
 		this.pictureLocaitonPath = null;
-		this.cardValue = "";
 	}
 	
-	public Employee(String name, double charge, double hourlyPay, String pictureLocation, String cardValue) {
+	public Employee(String name, double charge, double hourlyPay, String pictureLocation) {
 		this.name = name;
 		this.charge = charge;
 		this.hourlyPay = hourlyPay;
 		this.pictureLocaitonPath = pictureLocation;
-		this.cardValue = cardValue;
 	}
 	
 	public String getName()
@@ -45,11 +42,6 @@ public class Employee {
 	    return this.pictureLocaitonPath;
 	}
 	
-	public String getCardValue()
-	{
-	    return this.cardValue;
-	}
-	
 	public void setName(String name)
 	{
 	     this.name = name;
@@ -70,8 +62,4 @@ public class Employee {
 	     this.pictureLocaitonPath = pictureLocaitonPath;
 	}
 	
-	public void setCardValue(String cardValue)
-	{
-	     this.cardValue = cardValue;
-	}
 }

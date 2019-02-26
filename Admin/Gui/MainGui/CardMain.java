@@ -90,6 +90,19 @@ public class CardMain extends javax.swing.JFrame {
         jLabel3.setVerticalTextPosition(jLabel3.TOP);
         jLabel3.setHorizontalTextPosition(jLabel3.CENTER);
         PanelCardView = new javax.swing.JPanel();
+        PanelCardView.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		MainRunner.runGetEmployeeFromCard();
+        		
+        		//finds current frame out of listed frames and disposes of it
+        		for(int i = 0; i < Frame.getFrames().length; i++) {
+        			if(Frame.getFrames()[i].getTitle().equals("Card")) {
+        				Frame.getFrames()[i].dispose();
+        			}
+        		}
+        	}
+        });
         jLabel4 = new javax.swing.JLabel();
         jLabel4.setIcon(new ImageIcon(CardMain.class.getResource("/Resources/view-idcard-icon.png")));
         jLabel4.setFont(new java.awt.Font("Tw Cen MT", 0, 24));

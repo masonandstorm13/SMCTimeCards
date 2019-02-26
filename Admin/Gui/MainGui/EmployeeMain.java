@@ -69,7 +69,7 @@ public class EmployeeMain extends javax.swing.JFrame {
         PanelEmployeeCreate.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		MainRunner.runNewEmployee();;
+        		MainRunner.runNewEmployee();
         		//finds current frame out of listed frames and disposes of it
         		for(int i = 0; i < Frame.getFrames().length; i++) {
         			if(Frame.getFrames()[i].getTitle().equals("Employee")) {

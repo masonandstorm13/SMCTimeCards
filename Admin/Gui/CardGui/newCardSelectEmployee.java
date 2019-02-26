@@ -77,7 +77,6 @@ public class newCardSelectEmployee extends javax.swing.JFrame {
     			employee = fileHandler.getEmployee(selectedEmployeeFile);
     			
     			//sets preview name
-    			Label_EmployeeName.setText(employee.getName());
         		
     			//checks if there is a picture then sets it in the preview
     			if(employee.pictureLocaitonPath != null) {
@@ -92,7 +91,7 @@ public class newCardSelectEmployee extends javax.swing.JFrame {
         	public void mouseClicked(MouseEvent e) {
         		//checks if an employee is selected
         		if(employee != null) {
-        			MainRunner.runWriteCard(employee.getCardValue());
+        			MainRunner.runWriteCard(employee.getName());
         			newCardSelectEmployee.this.dispose();
         		}else {
 					JOptionPane.showMessageDialog(getParent(), "No Employee Selected");

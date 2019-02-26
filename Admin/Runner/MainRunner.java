@@ -2,7 +2,9 @@ package Runner;
 
 import java.awt.Frame;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
+import javax.smartcardio.CardException;
 import javax.swing.JFrame;
 
 import Custom.FileHandler;
@@ -30,7 +32,7 @@ public class MainRunner {
 	public static FirstRun hinttext;
 	
 	public static void main(String[] args) {
-		runAdminMainGui();
+		
 		
 		FileHandler filehandler = new FileHandler();
 		File firstRunTest = new File("C:/Users/" + System.getProperty("user.name") + "/SmcTimeCardSystem");
@@ -44,6 +46,7 @@ public class MainRunner {
 			MainRunner.hinttext = filehandler.getFirstRun(new File("C:/Users/" + System.getProperty("user.name") + "/SmcTimeCardSystem/firstRun.JSON"));
 		}
 		
+		runAdminMainGui();
 		System.out.println(MainRunner.hinttext);
 	}
 	
@@ -288,21 +291,7 @@ public class MainRunner {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
 			public void run() {
-            	//boolean that checks if Frame is already in memory
-            	Boolean exist = false;
-            	
-            	//finds current frame out of listed frames and disposes of it
-        		for(int i = 0; i < Frame.getFrames().length; i++) {
-        			if(Frame.getFrames()[i].getTitle().equals("newEmployee")) {
-        				Frame.getFrames()[i].setVisible(true);
-        				exist = true;
-        			}
-        		}
-        		
-        		//if the frame does not exist already it is created
-        		if(exist == false) {
-                    new newEmployee().setVisible(true);
-        		}
+            	new newEmployee().setVisible(true);
             }
         });
 	}
@@ -488,8 +477,14 @@ public class MainRunner {
             @Override
 			public void run() {
             		//runs the find employee method
-            		JFrame test = new getEmployeeFromCard();
-                    test.setVisible(true);                                          
+            		JFrame test = null;
+					try {
+						test = new getEmployeeFromCard();
+					} catch (UnsupportedEncodingException | CardException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                                                             
                    
             }
         });
@@ -527,12 +522,20 @@ public class MainRunner {
             @Override
 			public void run() {
             		//runs the find employee method
-            		JFrame test = new writeCard(cardValue);
-                    test.setVisible(true);                                          
+            		JFrame test = null;
+					try {
+						test = new writeCard(cardValue);
+					} catch (CardException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+                                                              
                    
             }
         });
 	}
+	
 	public static void runExtraMain() {
 		// TODO Auto-generated method stub
 		/* Set the Nimbus look and feel */

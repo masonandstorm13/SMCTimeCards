@@ -50,13 +50,13 @@ public class MatterialMenu extends javax.swing.JFrame {
     /**
      * Creates new form MatterialMenu
      */
-	public MatterialMenu(int part) {
+	public MatterialMenu(int part) { 
     	this.part = part;
     	
     	//sets up table and objects
     	for(int i = 0; i <= workOrderRun.totalParts; i++) {
     		if(!workOrderRun.workOrderSuper.getWorkOrderList().get(i).matterials.isEmpty()) {
-    			for(Matterial matterial : workOrderRun.workOrderSuper.getWorkOrderList().get(i).getMatterialls()) {
+    			for(Matterial matterial : workOrderRun.workOrderSuper.getWorkOrderList().get(i).getMatterials()) {
     				matterialList.add(matterial);
     			}
     		}

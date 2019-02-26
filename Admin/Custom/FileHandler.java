@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import Objects.Cards;
 import Objects.Customer;
 import Objects.Employee;
 import Objects.FirstRun;
@@ -63,28 +62,6 @@ public class FileHandler {
 		return employee;
 	}
 	
-	public Cards getCards(File location) {
-		BufferedReader br = null;
-		Cards cards = null;
-		try {
-			br = new BufferedReader(new FileReader(location.toString()));
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try
-		{
-			cards = new Gson().fromJson(br, Cards.class);
-
-		}
-		catch (IllegalStateException | JsonSyntaxException exception)
-		{
-			System.out.println(exception.getMessage());
-		}
-		
-		return cards;
-	}
 	
 	public WorkOrder getWorkOrder(File location) {
 		BufferedReader br = null;

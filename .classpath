@@ -24,5 +24,9 @@
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/nfctools-ndef-1.0.M8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/slf4j-api-1.8.0-beta1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Mason Smith/eclipse-workspace/SMCTimeCards/lib/joda-time-2.10.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections4-4.2.jar"/>
+	<classpathentry kind="lib" path="lib/poi-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-ooxml-4.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/poi-scratchpad-4.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

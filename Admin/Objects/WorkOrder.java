@@ -9,6 +9,7 @@ public class WorkOrder {
 	public String date;
 	public String phone;
 	public String fax;
+	public String orderedBy;
 	public Boolean charge;
 	public Boolean cod;
 	public Boolean rush;
@@ -31,6 +32,7 @@ public class WorkOrder {
 		this.date = null;
 		this.phone = null;
 		this.fax = null;
+		this.orderedBy = null;
 		this.charge = null;
 		this.cod = null;
 		this.rush = null;
@@ -49,7 +51,7 @@ public class WorkOrder {
 		
 	}
 	
-	public WorkOrder(int part, String date, String customer, String phone, String fax, Boolean charge, Boolean cod, Boolean rush, 
+	public WorkOrder(int part, String date, String customer, String phone, String orderedBy, String fax, Boolean charge, Boolean cod, Boolean rush, 
 			Boolean overTime, String dueDate, int qty, Boolean smc, Boolean motorFreight, Boolean cpu, Boolean ups, Boolean courier, String description,
 			List<Matterial> matterials, List<Time> times, String completeDate) {
 		
@@ -57,6 +59,7 @@ public class WorkOrder {
 		this.date = date;
 		this.phone = phone;
 		this.fax = fax;
+		this.orderedBy = orderedBy;
 		this.charge = charge;
 		this.cod = cod;
 		this.rush = rush;
@@ -85,6 +88,10 @@ public class WorkOrder {
 	
 	public String getPhone() {
 		return this.phone;
+	}
+	
+	public String getOrderedBy() {
+		return this.orderedBy;
 	}
 	
 	public String getFax() {
@@ -139,7 +146,7 @@ public class WorkOrder {
 		return this.description;
 	}
 	
-	public List<Matterial> getMatterialls(){
+	public List<Matterial> getMatterials(){
 		return this.matterials;
 	}
 	
@@ -165,6 +172,10 @@ public class WorkOrder {
 	
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	
+	public void setOrderedBy(String orderedBy) {
+		this.orderedBy = orderedBy;
 	}
 	
 	public void setFax(String fax) {
@@ -219,7 +230,7 @@ public class WorkOrder {
 		this.description = description;
 	}
 	
-	public void setMatterialls(List<Matterial> matterials){
+	public void setMatterials(List<Matterial> matterials){
 		this.matterials = matterials;
 	}
 	

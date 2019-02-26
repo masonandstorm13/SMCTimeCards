@@ -5,38 +5,34 @@
  */
 package Gui.WorkOrderGui;
 
-import java.awt.Frame;
-import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Formatter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 
-import Objects.WorkOrder;
 import Runner.MainRunner;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Dimension;
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  *
@@ -58,7 +54,6 @@ public class newWorkOrder extends javax.swing.JFrame {
 		// sets up date stuff
 		date = LocalDateTime.now();
 		dateFormate = DateTimeFormatter.ofPattern("M/d/yyyy");
-		
 		//sets up part
 		this.part = part;
 		
@@ -79,10 +74,10 @@ public class newWorkOrder extends javax.swing.JFrame {
 			for (String list : fileList) {
 				integerList.add(Integer.valueOf(list));
 			}
-			// sorts integers from lowest to highest
+			// sorts integers from lowest to highest 
 			Collections.sort(integerList);
 			// sets the value of last work order from the Integer List
-			lastWorkOrderNumber = integerList.get(integerList.size() - 1);
+			lastWorkOrderNumber = integerList.get(integerList.size() -1);
 			//sets default values
 			workOrderRun.mainWorkOrderNumber = String.valueOf(lastWorkOrderNumber + 1);
 			workOrderRun.mainWorkOrderDate = dateFormate.toString();
@@ -109,6 +104,7 @@ public class newWorkOrder extends javax.swing.JFrame {
         	public void focusLost(FocusEvent arg0) {
         		workOrderRun.mainWorkOrderDate = TextField_Date.getText();
         		workOrderRun.upDateAllFrames();
+        		checkValues();
         	}
         });
         TextField_Date.setName("TextField_Date");
@@ -122,6 +118,7 @@ public class newWorkOrder extends javax.swing.JFrame {
         	public void focusLost(FocusEvent e) {
         		workOrderRun.mainWorkOrderNumber = TextField_WorkOrderNumber.getText();
         		workOrderRun.upDateAllFrames();
+        		checkValues();
         	}
         });
         PanelCustomer = new javax.swing.JPanel();
@@ -147,6 +144,7 @@ public class newWorkOrder extends javax.swing.JFrame {
         					}
         					workOrderRun.upDateAllFrames();
         				}
+        				checkValues();
                     }
         		});
         	}
@@ -162,6 +160,7 @@ public class newWorkOrder extends javax.swing.JFrame {
         	public void focusLost(FocusEvent e) {
         		workOrderRun.mainWorkOrderPhone = TextField_Phone.getText();
         		workOrderRun.upDateAllFrames();
+        		checkValues();
         	}
         });
         PanelFax = new javax.swing.JPanel();
@@ -174,24 +173,29 @@ public class newWorkOrder extends javax.swing.JFrame {
         	public void focusLost(FocusEvent e) {
         		workOrderRun.mainWorkOrderFax = TextField_Fax.getText();
         		workOrderRun.upDateAllFrames();
+        		checkValues();
         	}
         });
         jPanel5 = new javax.swing.JPanel();
-        PanelPONumber = new javax.swing.JPanel();
-        TextField_PONumber = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         PanelOrderedBy = new javax.swing.JPanel();
         TextField_OrderedBy = new javax.swing.JTextField();
+        TextField_OrderedBy.addFocusListener(new FocusAdapter() {
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		checkValues();
+        	}
+        });
         jLabel8 = new javax.swing.JLabel();
-        PanelCharge = new javax.swing.JPanel();
-        CheckBox_Charge = new JRadioButton();
-        PanelCOD = new javax.swing.JPanel();
-        CheckBox_COD = new JRadioButton();
-        CheckBox_COD.setSelected(true);
         jPanel6 = new javax.swing.JPanel();
         PanelDueDate = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         TextField_DueDate = new javax.swing.JFormattedTextField(dateFormate);
+        TextField_DueDate.addFocusListener(new FocusAdapter() {
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		checkValues();
+        	}
+        });
         jPanel3 = new javax.swing.JPanel();
         PanelRush = new javax.swing.JPanel();
         CheckBox_Rush = new javax.swing.JCheckBox();
@@ -200,6 +204,12 @@ public class newWorkOrder extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         PanelQty = new javax.swing.JPanel();
         TextField_Qty = new javax.swing.JTextField();
+        TextField_Qty.addFocusListener(new FocusAdapter() {
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		checkValues();
+        	}
+        });
         jLabel10 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -222,44 +232,45 @@ public class newWorkOrder extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jTextPane1.addFocusListener(new FocusAdapter() {
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		checkValues();
+        	}
+        });
         PanelButtons = new javax.swing.JPanel();
         PanelSubmit = new javax.swing.JPanel();
         Button_Submit = new javax.swing.JButton();
+        Button_Submit.setFont(new Font("Tw Cen MT Condensed", Font.PLAIN, 24));
+        Button_Submit.setForeground(Color.RED);
         Button_Submit.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		//set boolean to false if any required text field has no value
-        		Boolean hasValues = true;
-        		//used to save workOrder
-        		if(TextField_Date.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(TextField_WorkOrderNumber.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(workOrderRun.workOrderSuper.getCustomer() == null) {
-        			hasValues = false;
-        			
-        		}else if(TextField_Phone.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(TextField_OrderedBy.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(TextField_DueDate.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(TextField_Qty.getText().trim().length() <= 0) {
-        			hasValues = false;
-        			
-        		}else if(jTextPane1.getText().trim().length() <0) {
-        			hasValues = false;
-        			
-        		}
-        		
-        		//runs after all required text fields are checked for any value 
-        		if(hasValues == true) {
-        			
+        		//checks and saves values 
+        		checkValues();
+        		if(workOrderRun.currentPart == 0) {
+        			//master save for checking all save values
+        			Boolean masterSave = false;
+            		//checks all work orders in the save list
+    				for(int i = 0; i < workOrderRun.saveList.length; i++) {
+    					if(workOrderRun.saveList[i].equals(false)) {
+    						masterSave = false;
+    						JOptionPane.showMessageDialog(newWorkOrder.this, "Missing Values at Part : " +  workOrderRun.alphabet[i]);
+    						break;
+    					}else {
+    						masterSave = true;
+    					}
+    				}
+    				
+    				if(masterSave == true) {
+    					workOrderRun.saveWorkOrder();
+    					//closes frames and opens previous 
+    	        		MainRunner.runWorkOrderMain();
+    	        		workOrderRun.extraMenu.dispose();
+    	        		newWorkOrder.this.dispose();
+    				}else {
+    					
+    				}
         		}
         	}
         });
@@ -372,56 +383,23 @@ public class newWorkOrder extends javax.swing.JFrame {
         jPanel1.add(jPanel4);
 
         jPanel5.setPreferredSize(new java.awt.Dimension(720, 50));
-        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel5.setLayout(new GridLayout(0, 2, 0, 0));
 
-        PanelPONumber.setLayout(new java.awt.BorderLayout());
-
-        TextField_PONumber.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
-        TextField_PONumber.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        TextField_PONumber.setPreferredSize(new java.awt.Dimension(180, 40));
-        PanelPONumber.add(TextField_PONumber, java.awt.BorderLayout.PAGE_END);
-
-        jLabel6.setFont(new java.awt.Font("Tw Cen MT", 0, 12)); // NOI18N
-        jLabel6.setText("P.O Number");
-        jLabel6.setMinimumSize(new java.awt.Dimension(43, 10));
-        jLabel6.setPreferredSize(new java.awt.Dimension(180, 10));
-        PanelPONumber.add(jLabel6, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(PanelPONumber);
-
-        PanelOrderedBy.setPreferredSize(new java.awt.Dimension(180, 50));
+        PanelOrderedBy.setPreferredSize(new Dimension(360, 50));
         PanelOrderedBy.setLayout(new java.awt.BorderLayout());
 
         TextField_OrderedBy.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
         TextField_OrderedBy.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        TextField_OrderedBy.setPreferredSize(new java.awt.Dimension(180, 40));
+        TextField_OrderedBy.setPreferredSize(new Dimension(360, 40));
         PanelOrderedBy.add(TextField_OrderedBy, java.awt.BorderLayout.PAGE_END);
 
         jLabel8.setFont(new java.awt.Font("Tw Cen MT", 0, 12)); // NOI18N
         jLabel8.setText("Ordered By");
         jLabel8.setMinimumSize(new java.awt.Dimension(43, 10));
-        jLabel8.setPreferredSize(new java.awt.Dimension(180, 10));
+        jLabel8.setPreferredSize(new Dimension(360, 10));
         PanelOrderedBy.add(jLabel8, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(PanelOrderedBy);
-
-        PanelCharge.setLayout(new java.awt.BorderLayout());
-
-        CheckBox_Charge.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
-        CheckBox_Charge.setText("Charge");
-        CheckBox_Charge.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PanelCharge.add(CheckBox_Charge, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(PanelCharge);
-
-        PanelCOD.setLayout(new java.awt.BorderLayout());
-
-        CheckBox_COD.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
-        CheckBox_COD.setText("COD");
-        CheckBox_COD.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        PanelCOD.add(CheckBox_COD, java.awt.BorderLayout.CENTER);
-
-        jPanel5.add(PanelCOD);
 
         jPanel1.add(jPanel5);
 
@@ -589,7 +567,7 @@ public class newWorkOrder extends javax.swing.JFrame {
         
         //checks if arrows are needed
         if(workOrderRun.workOrderSuper.multiPart == true) {
-        	//adds arrow options to bootom of frame
+        	//adds arrow options to bottom of frame
         	PanelArrowMenu = new JPanel();
             PanelButtons.add(PanelArrowMenu);
             PanelArrowMenu.setLayout(new GridLayout(1, 0, 0, 0));
@@ -605,6 +583,7 @@ public class newWorkOrder extends javax.swing.JFrame {
             Button_RightArrow.addMouseListener(new MouseAdapter() {
             	@Override
             	public void mouseClicked(MouseEvent arg0) {
+            		checkValues();
             		if(workOrderRun.currentPart == 0) {
             			//sets all variables and updates text for all frames
             			workOrderRun.mainWorkOrderDate = TextField_Date.getText();
@@ -622,6 +601,7 @@ public class newWorkOrder extends javax.swing.JFrame {
             Button_LeftArrow.addMouseListener(new MouseAdapter() {
             	@Override
             	public void mouseClicked(MouseEvent arg0) {
+            		checkValues();
             		workOrderRun.previousWorkOrder();
             	}
             });
@@ -657,7 +637,33 @@ public class newWorkOrder extends javax.swing.JFrame {
         shipViaButtonGroup.add(CheckBox_Courier);
         
         ButtonGroup chargeButtonGroup = new ButtonGroup();
+        
+        panel = new JPanel();
+        jPanel5.add(panel);
+        panel.setLayout(new GridLayout(0, 2, 0, 0));
+        PanelCharge = new javax.swing.JPanel();
+        panel.add(PanelCharge);
+        PanelCharge.setPreferredSize(new Dimension(180, 50));
+        CheckBox_Charge = new JRadioButton();
+        PanelCharge.setLayout(new java.awt.BorderLayout());
+                
+        CheckBox_Charge.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
+        CheckBox_Charge.setText("Charge");
+        CheckBox_Charge.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        PanelCharge.add(CheckBox_Charge, java.awt.BorderLayout.CENTER);
         chargeButtonGroup.add(CheckBox_Charge);
+        PanelCOD = new javax.swing.JPanel();
+        panel.add(PanelCOD);
+        CheckBox_COD = new JRadioButton();
+        CheckBox_COD.setPreferredSize(new Dimension(180, 50));
+        CheckBox_COD.setSelected(true);
+                        
+        PanelCOD.setLayout(new java.awt.BorderLayout());
+                                
+        CheckBox_COD.setFont(new java.awt.Font("Tw Cen MT", 0, 24)); // NOI18N
+        CheckBox_COD.setText("COD");
+        CheckBox_COD.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        PanelCOD.add(CheckBox_COD, java.awt.BorderLayout.CENTER);
         chargeButtonGroup.add(CheckBox_COD);
         
         //checks if the current part is not the fist
@@ -679,6 +685,88 @@ public class newWorkOrder extends javax.swing.JFrame {
         
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    //checks if all values that are need meet condition
+    public boolean checkValues() {
+    	//set boolean to false if any required text field has no value
+		Boolean hasValues = true;
+		//used to save workOrder
+		if(TextField_Date.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(TextField_WorkOrderNumber.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(workOrderRun.workOrderSuper.getCustomer() == null) {
+			hasValues = false;
+			
+		}else if(TextField_Phone.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(TextField_OrderedBy.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(TextField_DueDate.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(TextField_Qty.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}else if(jTextPane1.getText().trim().length() <= 0) {
+			hasValues = false;
+			
+		}
+		//checks if the text field qty has a value and is a allowable integer
+		if(TextField_Qty.getText().trim().length() > 0) {
+			try {
+				Integer.parseInt(TextField_Qty.getText());
+			}catch(NumberFormatException exception) {
+				JOptionPane.showMessageDialog(newWorkOrder.this, "Qty must be a number");
+				hasValues = false;
+			}
+		}
+		
+		
+		//runs after all required text fields are checked for any value 
+		if(hasValues == true) {
+			//if all require values are valid
+			saveValues();
+			Button_Submit.setForeground(Color.GREEN);
+			workOrderRun.saveList[workOrderRun.currentPart] = true;			
+			return true;
+		}else {
+			//if all required values are invalid
+			Button_Submit.setForeground(Color.RED);
+			workOrderRun.saveList[workOrderRun.currentPart] = false;
+			return false;
+		}
+		
+		
+    }
+        
+    public void saveValues() {
+    	//if work order is not primary
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setDate(TextField_Date.getText());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setPhone(TextField_Phone.getText());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setFax(TextField_Fax.getText());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setOrderedBy(TextField_OrderedBy.getText());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setDueDate(TextField_DueDate.getText());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setQty(Integer.parseInt(TextField_Qty.getText()));
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setRush(CheckBox_Rush.isSelected());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setOverTime(CheckBox_OverTime.isSelected());
+    	workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setDescription(jTextPane1.getText());
+    		
+    	//handles button groups ship via
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setCourier(CheckBox_Courier.isSelected());
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setCpu(CheckBox_Cpu.isSelected());
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setMotorFreight(CheckBox_MotorFreight.isSelected());
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setSmc(CheckBox_SMC.isSelected());
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setSmc(CheckBox_Ups.isSelected());
+    	//handles charge/cod button group
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setCod(CheckBox_COD.isSelected());
+    		workOrderRun.workOrderSuper.workOrderList.get(workOrderRun.currentPart).setCharge(CheckBox_Charge.isSelected());
+    }
+    
     
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton Button_Submit;
@@ -705,7 +793,6 @@ public class newWorkOrder extends javax.swing.JFrame {
 	private javax.swing.JPanel PanelMotorFreight;
 	private javax.swing.JPanel PanelOrderedBy;
 	private javax.swing.JPanel PanelOverTime;
-	private javax.swing.JPanel PanelPONumber;
 	private javax.swing.JPanel PanelPhoneNumber;
 	private javax.swing.JPanel PanelQty;
 	private javax.swing.JPanel PanelRush;
@@ -719,7 +806,6 @@ public class newWorkOrder extends javax.swing.JFrame {
 	private javax.swing.JTextField TextField_DueDate;
 	private javax.swing.JTextField TextField_Fax;
 	private javax.swing.JTextField TextField_OrderedBy;
-	private javax.swing.JTextField TextField_PONumber;
 	private javax.swing.JTextField TextField_Phone;
 	private javax.swing.JTextField TextField_Qty;
 	private javax.swing.JFormattedTextField TextField_WorkOrderNumber;
@@ -730,7 +816,6 @@ public class newWorkOrder extends javax.swing.JFrame {
 	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel4;
 	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
 	private javax.swing.JLabel jLabel7;
 	private javax.swing.JLabel jLabel8;
 	private javax.swing.JLabel jLabel9;
@@ -752,5 +837,6 @@ public class newWorkOrder extends javax.swing.JFrame {
 	private JPanel PanelArrowMenu;
 	private JButton Button_LeftArrow;
 	private JButton Button_RightArrow;
+	private JPanel panel;
 	// End of variables declaration//GEN-END:variables
 }
