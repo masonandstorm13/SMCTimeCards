@@ -3,7 +3,6 @@ package Gui.WorkOrderGui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
-import java.awt.TextField;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -53,6 +52,12 @@ public class workOrderRun {
 		defaultWorkOrderDirectory = "\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\WorkOrders\\";
 		defaultCustomerDirectory = "\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\";
 		workInProgressDirectory = "\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\WorkInProgress\\WorkInProgressList.JSON";
+		
+		if(!(new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\WorkInProgress\\").exists())) {
+			new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\WorkInProgress\\").mkdirs();
+			workInProgress = new WorkInProgress();
+			fileHandler.writeFile(new File(workInProgressDirectory), workInProgress);
+		}
 		
 		//sets up all other
 		workInProgress = new FileHandler().getWorkInProgress(new File(workInProgressDirectory));
@@ -107,7 +112,7 @@ public class workOrderRun {
 	}
 	
 	public static void saveWorkOrder() {
-		selectedCustomer.addWorkOrdersDirectories(workOrderSuper);		
+		selectedCustomer.addWorkOrdersDirectories(workOrderSuper.getWorkOrderNumber());		
 		if(selectedCustomer.equals("WalkIn")) {
 			fileHandler.writeFile(new File(defaultCustomerDirectory + "zzz-WalkIn" + ".JSON"), selectedCustomer);
 		}else {
@@ -117,7 +122,8 @@ public class workOrderRun {
 		if(!new File(defaultWorkOrderDirectory).exists()) {
 			new File(defaultWorkOrderDirectory).mkdirs();
 		}
-		fileHandler.writeFile(new File(defaultWorkOrderDirectory + workOrderSuper.getWorkOrderNumber() + ".JSON") , workOrderSuper);	
+		fileHandler.writeFile(new File(defaultWorkOrderDirectory + workOrderSuper.getWorkOrderNumber() + ".JSON") , workOrderSuper);
+		new File(defaultWorkOrderDirectory + "Files").mkdirs();
 		if(workOrderSuper.getInProgress() == true ) {
 			//checks if work order is already in work in progress list 
 			Boolean saveInProgress = true;

@@ -33,11 +33,14 @@ import javax.swing.JLabel;
 public class ExtraMain extends javax.swing.JFrame {
 
 	public FileHandler filehandler = new FileHandler();
-	
+	private File customerDirectory = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\");
     /**
      * Creates new form ExtraMain
      */
     public ExtraMain() {
+    	if(!customerDirectory.exists()) {
+    		customerDirectory.mkdirs();
+    	}
     	setTitle("Extra");
         initComponents();
     }
@@ -88,7 +91,7 @@ public class ExtraMain extends javax.swing.JFrame {
             			newCustomer.setName(name);
             			
             			//sets up customer file location
-            			File CustomerLocation = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Customers\\" + name + ".JSON");        			
+            			File CustomerLocation = new File(customerDirectory + "\\" + name + ".JSON");        			
             			//checks if customer exist already
             			if(CustomerLocation.exists()) {
             				JOptionPane.showMessageDialog(getParent(), "Customer Already Exist");

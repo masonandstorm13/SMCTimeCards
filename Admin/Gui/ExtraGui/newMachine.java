@@ -38,12 +38,15 @@ public class newMachine extends javax.swing.JFrame {
 
 	public File machinePicture = new File("");
 	public BufferedImage resizedImage = null;
-
+	private File machineDirectory = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Machines");
 	
     /**
      * Creates new form newMachine
      */
     public newMachine() {
+    	if(!machineDirectory.exists()) {
+    		machineDirectory.mkdirs();
+    	}
     	setTitle("newMachine");
         initComponents();
     }
@@ -153,11 +156,11 @@ public class newMachine extends javax.swing.JFrame {
             			
             			FileHandler fileHandler = new FileHandler();
             			new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Machines" + "\\" + TextField_MachineCode.getText()).mkdir();
-            			fileHandler.writeFile(new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Machines" + "\\" + TextField_MachineCode.getText() + "\\" + TextField_MachineCode.getText() + ".JSON"), saveMachine);
+            			fileHandler.writeFile(new File(machineDirectory + "\\" + TextField_MachineCode.getText() + "\\" + TextField_MachineCode.getText() + ".JSON"), saveMachine);
             			
             			//checks if an image of the machine is present
                 		if(resizedImage != null) {
-                			File dest = new File("\\\\192.168.0.125\\ServiceMachineTimeCardSystem\\Machines" + "\\" + TextField_MachineCode.getText() + "\\" + "MachinePicture " +TextField_MachineCode.getText() + ".jpg");
+                			File dest = new File(machineDirectory + "\\" + TextField_MachineCode.getText() + "\\" + "MachinePicture " +TextField_MachineCode.getText() + ".jpg");
                 			try {
         						ImageIO.write(resizedImage, "jpg", dest);
         					} catch (IOException e1) {

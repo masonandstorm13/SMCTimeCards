@@ -6,14 +6,14 @@ import java.util.List;
 public class Customer {
 	
 	public String name;
-	public List<WorkOrderSuper> workOrdersDirectories;
+	public List<String> workOrdersDirectories;
 	
 	public Customer() {
 		this.name = "";
-		this.workOrdersDirectories = new ArrayList<WorkOrderSuper>();
+		this.workOrdersDirectories = new ArrayList<String>();
 	}
 	
-	public Customer(String name, List<WorkOrderSuper> workOrdersDirectories) {
+	public Customer(String name, List<String> workOrdersDirectories) {
 		this.name = name;
 		this.workOrdersDirectories = workOrdersDirectories;
 
@@ -24,7 +24,7 @@ public class Customer {
 	    return this.name;
 	}
 	
-	public List<WorkOrderSuper> getWorkOrdersDirectories()
+	public List<String> getWorkOrdersDirectories()
 	{
 	    return this.workOrdersDirectories;
 	}
@@ -35,16 +35,16 @@ public class Customer {
 	     this.name = name;
 	}
 	
-	public void setWorkOrdersDirectories(List<WorkOrderSuper> workOrdersDirectories)
+	public void setWorkOrdersDirectories(List<String> workOrdersDirectories)
 	{
 	     this.workOrdersDirectories = workOrdersDirectories;
 	}
 	
-	public void addWorkOrdersDirectories(WorkOrderSuper workOrderSuper) {
+	public void addWorkOrdersDirectories(String workOrderSuper) {
 		this.workOrdersDirectories.add(workOrderSuper);
 	}
 	
-	public void removeWorkOrdersDirectories(WorkOrderSuper workOrderSuper) {
+	public void removeWorkOrdersDirectories(String workOrderSuper) {
 		this.workOrdersDirectories.remove(workOrderSuper);
 	}
 	

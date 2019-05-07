@@ -51,6 +51,10 @@ public class newEmployee extends javax.swing.JFrame {
      * Creates new form newEmployee
      */
     public newEmployee() {
+    	//checks if directory exist if it doesnot creates
+    	if(!employeeDirectory.exists()) {
+    		employeeDirectory.mkdirs();
+    	}
     	setTitle("newEmployee");
         initComponents();
     }
@@ -180,7 +184,8 @@ public class newEmployee extends javax.swing.JFrame {
                     				}else {
                     					newEmployee.pictureLocaitonPath = null;
                     				}
-                    			
+                    				
+                    				
                     				//writes files
                     				fileHandler.writeFile(newEmployeeLocation, newEmployee);
                 				} catch (IOException c) {

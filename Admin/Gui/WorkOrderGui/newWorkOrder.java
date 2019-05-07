@@ -77,7 +77,12 @@ public class newWorkOrder extends javax.swing.JFrame {
 			// sorts integers from lowest to highest 
 			Collections.sort(integerList);
 			// sets the value of last work order from the Integer List
-			lastWorkOrderNumber = integerList.get(integerList.size() -1);
+			if(integerList.size() != 0) {
+				lastWorkOrderNumber = integerList.get(integerList.size() -1);
+
+			}else {
+				lastWorkOrderNumber = 0;
+			}
 			//sets default values
 			workOrderRun.mainWorkOrderNumber = String.valueOf(lastWorkOrderNumber + 1);
 			workOrderRun.mainWorkOrderDate = dateFormate.toString();
@@ -729,6 +734,7 @@ public class newWorkOrder extends javax.swing.JFrame {
 		
 		//runs after all required text fields are checked for any value 
 		if(hasValues == true) {
+			workOrderRun.workOrderSuper.setWorkOrderNumber(TextField_WorkOrderNumber.getText());
 			//if all require values are valid
 			saveValues();
 			Button_Submit.setForeground(Color.GREEN);
